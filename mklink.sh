@@ -8,7 +8,11 @@ for dotfile in .?*; do
         .git)
             continue;;
         *)
-            ln -Fis "$PWD/$dotfile" $HOME
+            ln -is "$PWD/$dotfile" $HOME
             ;;
     esac
 done
+
+ln -is "$PWD/.bashrc" "$HOME/.zshrc"
+
+script .bashrc
