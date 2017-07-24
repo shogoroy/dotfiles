@@ -13,6 +13,3 @@ for dotfile in .?*; do
     esac
 done
 
-ln -is "$PWD/.bashrc" "$HOME/.zshrc"
-
-script .bashrc
