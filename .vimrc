@@ -18,6 +18,3 @@ set shiftwidth=4
 set softtabstop=4
 set smartindent
 
-" PATH
-export GOPATH=$HOME/.go
-export PATH=$PATH:$GOPATH/bin
