@@ -3,3 +3,7 @@ if [ "$(uname)" = 'Darwin' ]; then
 else
   alias ls='ls -a --color=auto'
 fi
+
+# PATH
+export GOPATH=$HOME/dev/go
+export PATH=$PATH:%GOPATH/bin
