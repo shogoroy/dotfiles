@@ -11,5 +11,10 @@ export LS_COLORS="${LS_COLORS}:di=01;36"
 export GOPATH=$HOME/dev/go
 export PATH=$PATH:%GOPATH/bin
 
+# 自動補完
 autoload -U compinit
 compinit
+
+# prompt
+# prompt
+PROMPT='%m:%c %n$ '
