@@ -17,4 +17,4 @@ compinit
 
 # prompt
 # prompt
-PROMPT='%m:%c %n$ '
+PROMPT='[%n@%m]%~%%'
