@@ -37,6 +37,7 @@ if [ "$(uname)" = 'Darwin' ]; then
   export CASSANDRA_KEY="rw-cassandra"
   export APP_CONFIG_KEY="url"
 
+  export PATH="/usr/local/opt/mysql@5.6/bin:$PATH"
 
 else
   alias ls='ls -a --color=auto'
