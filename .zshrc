@@ -49,6 +49,7 @@ fi
 # PATH
 export GOPATH=$HOME/dev/go
 export PATH=$PATH:%GOPATH/bin
+export PATH=$HOME/.nodebrew/current/bin:$PATH
 
 # 自動補完
 autoload -U compinit
