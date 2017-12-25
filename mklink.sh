@@ -7,9 +7,10 @@ for dotfile in .?*; do
             continue;;
         .git)
             continue;;
+        .DS_Store)
+            continue;;
         *)
             ln -is "$PWD/$dotfile" $HOME
             ;;
     esac
 done
-
