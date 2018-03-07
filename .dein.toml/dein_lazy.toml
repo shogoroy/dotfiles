@@ -1,6 +1,6 @@
 [[plugins]]
 repo  = 'Quramy/tsuquyomi'
-on_ft = ['typescript']
+on_ft = 'typescript'
 
 [[plugins]]
 repo = 'cespare/vim-toml'
