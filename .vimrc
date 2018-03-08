@@ -1,6 +1,6 @@
-"
-" start: dein settings
-"
+""""""""""""""""""""""""
+" start: dein settings "
+""""""""""""""""""""""""
 " プラグインが実際にインストールされるディレクトリ
 let s:dein_dir = expand('~/dev/.cache/dein')
 " dein.vim 本体
@@ -38,12 +38,13 @@ if dein#check_install()
   call dein#install()
 endif
 
-"
-" end: dein settings
-"
+""""""""""""""""""""""
+" end: dein settings "
+""""""""""""""""""""""
 
 " setting
 set fenc=utf-8
+set noswapfile
 
 " looks
 set number
@@ -61,3 +62,22 @@ set expandtab
 set shiftwidth=4
 set softtabstop=4
 set smartindent
+
+""""""""""""""""""""""""""""""
+" 自動的に閉じ括弧を入力
+""""""""""""""""""""""""""""""
+imap { {}<LEFT>
+imap [ []<LEFT>
+imap ( ()<LEFT>
+""""""""""""""""""""""""""""""
+
+""""""""""""""""""""""""""""""
+" 最後のカーソル位置を復元する
+""""""""""""""""""""""""""""""
+if has("autocmd")
+    autocmd BufReadPost *
+    \ if line("'\"") > 0 && line ("'\"") <= line("$") |
+    \   exe "normal! g'\"" |
+    \ endif
+endif
+""""""""""""""""""""""""""""""
