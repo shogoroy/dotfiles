@@ -81,3 +81,15 @@ if has("autocmd")
     \ endif
 endif
 """"""""""""""""""""""""""""""
+
+
+"""""""""""
+" NERDTree
+"""""""""""
+let NERDTreeShowHidden=1
+
+
+""""""""""""
+" tsuquyomi
+""""""""""""
+let g:tsuquyomi_completion_detail = 1
