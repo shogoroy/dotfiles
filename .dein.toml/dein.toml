@@ -15,5 +15,5 @@ rev  = 'colorize-template-strings'
 [[plugins]]
 repo = 'w0rp/ale'
 
-[[iplugins]]
+[[plugins]]
 repo = 'editorconfig/editorconfig-vim'
