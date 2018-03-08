@@ -17,3 +17,6 @@ repo = 'w0rp/ale'
 
 [[plugins]]
 repo = 'editorconfig/editorconfig-vim'
+
+[[plugins]]
+repo = 'scrooloose/nerdtree'
