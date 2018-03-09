@@ -42,6 +42,18 @@ endif
 " end: dein settings "
 """"""""""""""""""""""
 
+
+"""""""""""
+" deoplete
+"""""""""""
+call dein#add('Shougo/deoplete.nvim')
+  call dein#add('Shougo/deoplete-rct')
+
+  if !has('nvim')
+  call dein#add('roxma/nvim-yarp')
+  call dein#add('roxma/vim-hug-neovim-rpc')
+  endif
+
 " setting
 set fenc=utf-8
 set noswapfile
