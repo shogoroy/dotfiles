@@ -42,6 +42,12 @@ endif
 " end: dein settings "
 """"""""""""""""""""""
 
+"""""""""""
+" NERDTree
+"""""""""""
+let NERDTreeShowHidden=1
+nnoremap <silent><C-e> :NERDTreeToggle<CR>
+
 
 """""""""""
 " deoplete
@@ -53,6 +59,15 @@ call dein#add('Shougo/deoplete.nvim')
   call dein#add('roxma/nvim-yarp')
   call dein#add('roxma/vim-hug-neovim-rpc')
   endif
+
+""""""""""""
+" tsuquyomi
+""""""""""""
+let g:tsuquyomi_completion_detail = 1
+
+""""""""""""""""""""""
+" native vim settings
+""""""""""""""""""""""
 
 " setting
 set fenc=utf-8
@@ -94,14 +109,3 @@ if has("autocmd")
 endif
 """"""""""""""""""""""""""""""
 
-
-"""""""""""
-" NERDTree
-"""""""""""
-let NERDTreeShowHidden=1
-
-
-""""""""""""
-" tsuquyomi
-""""""""""""
-let g:tsuquyomi_completion_detail = 1
