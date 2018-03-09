@@ -86,9 +86,12 @@ set virtualedit=onemore
 
 " tab etc.
 set expandtab
-set shiftwidth=4
-set softtabstop=4
+set shiftwidth=2
+set softtabstop=2
 set smartindent
+
+"BSで削除できるものを指定する
+set backspace=indent,eol,start
 
 """"""""""""""""""""""""""""""
 " 自動的に閉じ括弧を入力
