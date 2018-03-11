@@ -90,15 +90,22 @@ set shiftwidth=2
 set softtabstop=2
 set smartindent
 
-"BSで削除できるものを指定する
+" BSで削除できるものを指定する
 set backspace=indent,eol,start
+
+" ファイルを閉じた後でもUndoできるようにする
+if has('persistent_undo')
+  set undodir=~/.vim/undo
+  set undofile
+endif
+
 
 """"""""""""""""""""""""""""""
 " 自動的に閉じ括弧を入力
 """"""""""""""""""""""""""""""
 imap { {}<LEFT>
-imap [ []<LEFT>
-imap ( ()<LEFT>
+" imap [ []<LEFT>
+" imap ( ()<LEFT>
 """"""""""""""""""""""""""""""
 
 """"""""""""""""""""""""""""""
