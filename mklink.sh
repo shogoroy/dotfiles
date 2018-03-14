@@ -9,6 +9,8 @@ for dotfile in .?*; do
             continue;;
         .DS_Store)
             continue;;
+        .vim)
+            continue;;
         *)
             ln -is "$PWD/$dotfile" $HOME
             ;;

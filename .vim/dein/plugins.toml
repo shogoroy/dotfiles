@@ -20,3 +20,4 @@ repo = 'editorconfig/editorconfig-vim'
 
 [[plugins]]
 repo = 'scrooloose/nerdtree'
+
