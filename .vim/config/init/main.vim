@@ -2,7 +2,7 @@
 " start: dein settings "
 """"""""""""""""""""""""
 " プラグインが実際にインストールされるディレクトリ
-let s:dein_dir = expand('~/dev/.cache/dein')
+let s:dein_dir = expand('~/.cache/dein')
 " dein.vim 本体
 let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
 
