@@ -2,7 +2,7 @@
 " start: dein settings "
 """"""""""""""""""""""""
 " プラグインが実際にインストールされるディレクトリ
-let s:dein_dir = expand('~/.cache/dein')
+let s:dein_dir = expand('~/.cache/.vim/dein')
 " dein.vim 本体
 let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
 
@@ -70,7 +70,7 @@ set backspace=indent,eol,start
 
 " ファイルを閉じた後でもUndoできるようにする
 if has('persistent_undo')
-  set undodir=~/.vim/undo
+  set undodir=~/.cache/.vim/undo
   set undofile
 endif
 
