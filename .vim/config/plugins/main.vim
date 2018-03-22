@@ -32,3 +32,7 @@ call dein#add('Shougo/deoplete.nvim')
 """"""""""""
 let g:tsuquyomi_completion_detail = 1
 
+"""""""""
+" gotham
+"""""""""
+colorscheme gotham

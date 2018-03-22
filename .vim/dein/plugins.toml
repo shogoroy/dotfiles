@@ -21,3 +21,5 @@ repo = 'editorconfig/editorconfig-vim'
 [[plugins]]
 repo = 'scrooloose/nerdtree'
 
+[[plugins]]
+repo = 'whatyouhide/vim-gotham'
