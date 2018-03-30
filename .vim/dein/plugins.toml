@@ -24,3 +24,10 @@ repo = 'whatyouhide/vim-gotham'
 repo = 'delphinus35/typescript-vim'
 rev  = 'colorize-template-strings'
 on_ft = 'typescript'
+
+[[plugins]]
+repo = 'plasticboy/vim-markdown'
+[[plugins]]
+repo = 'kannokanno/previm'
+[[plugins]]
+repo = 'tyru/open-browser.vim'
