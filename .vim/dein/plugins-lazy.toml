@@ -10,3 +10,7 @@ on_ft = 'toml'
 repo = 'Shougo/deoplete.nvim'
 if = 'has("nvim")'
 on_i = 1
+
+[[plugins]]
+repo = 'artur-shaik/vim-javacomplete2'
+on_ft = 'java'
