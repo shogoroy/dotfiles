@@ -52,3 +52,7 @@ let g:vim_markdown_folding_disabled=1
 """"""""""""""""""""
 autocmd FileType java setlocal omnifunc=javacomplete#Complete
 
+""""""""""""""""""
+" dart-vim-plugin
+""""""""""""""""""
+let dart_format_on_save = 1

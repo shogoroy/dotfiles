@@ -26,6 +26,10 @@ rev  = 'colorize-template-strings'
 on_ft = 'typescript'
 
 [[plugins]]
+repo = 'dart-lang/dart-vim-plugin'
+on_ft = 'dart'
+
+[[plugins]]
 repo = 'plasticboy/vim-markdown'
 [[plugins]]
 repo = 'kannokanno/previm'
