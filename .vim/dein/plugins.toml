@@ -20,6 +20,12 @@ repo = 'scrooloose/nerdtree'
 [[plugins]]
 repo = 'whatyouhide/vim-gotham'
 
+
+# language plugin
+[[plugins]]
+repo = 'pangloss/vim-javascript'
+on_ft = 'javascript'
+
 [[plugins]]
 repo = 'delphinus35/typescript-vim'
 rev  = 'colorize-template-strings'
