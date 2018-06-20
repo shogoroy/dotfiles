@@ -19,5 +19,9 @@ export PATH=$HOME/.nodebrew/current/bin:$PATH
 autoload -U compinit
 compinit
 
+# 前方予測
+autoload predict-on
+predict-on
+
 # prompt
 PROMPT='[%n@%m]%~%%'
