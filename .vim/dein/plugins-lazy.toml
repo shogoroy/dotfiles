@@ -8,8 +8,9 @@ on_ft = 'toml'
 
 [[plugins]]
 repo = 'Shougo/deoplete.nvim'
-if = 'has("nvim")'
-on_i = 1
+
+[[plugins]]
+repo = 'zchee/deoplete-clang'
 
 [[plugins]]
 repo = 'artur-shaik/vim-javacomplete2'
