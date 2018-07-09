@@ -15,3 +15,9 @@ repo = 'zchee/deoplete-clang'
 [[plugins]]
 repo = 'artur-shaik/vim-javacomplete2'
 on_ft = 'java'
+
+[[plugins]]
+repo = 'zchee/deoplete-go'
+
+[[plugins]]
+repo = 'fatih/vim-go'
