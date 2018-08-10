@@ -36,6 +36,10 @@ repo = 'dart-lang/dart-vim-plugin'
 on_ft = 'dart'
 
 [[plugins]]
+repo = 'ekalinin/Dockerfile.vim'
+build = 'make'
+
+[[plugins]]
 repo = 'plasticboy/vim-markdown'
 [[plugins]]
 repo = 'kannokanno/previm'
