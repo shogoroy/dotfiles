@@ -17,10 +17,6 @@ repo = 'editorconfig/editorconfig-vim'
 [[plugins]]
 repo = 'scrooloose/nerdtree'
 
-[[plugins]]
-repo = 'whatyouhide/vim-gotham'
-
-
 # language plugin
 [[plugins]]
 repo = 'pangloss/vim-javascript'
@@ -35,6 +31,11 @@ on_ft = 'typescript'
 repo = 'dart-lang/dart-vim-plugin'
 on_ft = 'dart'
 
+[[plugins]]
+repo = 'fatih/vim-go'
+on_ft = 'go'
+
+# filetype syntax
 [[plugins]]
 repo = 'ekalinin/Dockerfile.vim'
 build = 'make'
