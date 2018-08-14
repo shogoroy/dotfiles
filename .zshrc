@@ -25,3 +25,5 @@ compinit
 
 # prompt
 PROMPT='[%n@%m]%~%%'
+
+alias cdgo='cd $GOPATH'
