@@ -1,0 +1,6 @@
+[[plugins]]
+repo = 'artur-shaik/vim-javacomplete2'
+on_ft = 'java'
+hook_add = '''
+autocmd FileType java setlocal omnifunc=javacomplete#Complete
+'''

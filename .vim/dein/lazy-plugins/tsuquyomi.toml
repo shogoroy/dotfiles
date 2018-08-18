@@ -1,0 +1,6 @@
+[[plugins]]
+repo  = 'Quramy/tsuquyomi'
+on_ft = 'typescript'
+hook_add = '''
+let g:tsuquyomi_completion_detail = 1
+'''
