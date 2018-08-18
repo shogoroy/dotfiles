@@ -1,4 +1,0 @@
-[[plugins]]
-repo = 'delphinus35/typescript-vim'
-rev  = 'colorize-template-strings'
-on_ft = 'typescript'

@@ -21,16 +21,18 @@ runtime! config/plugins/*.vim
   let g:dein_dir    = expand('~/.vim/dein')
   let s:plugin_dir      = g:dein_dir . '/plugins'
   let s:lazy_plugin_dir = g:dein_dir . '/lazy-plugins'
+  let s:ft_plugin_dir = g:dein_dir . '/ft-plugins'
 
   let s:tomls = split(glob(s:plugin_dir . '/*.toml'), '\n')
   let s:lazy_tomls = split(glob(s:lazy_plugin_dir . '/*.toml'), '\n')
+  let s:ft_tomls = split(glob(s:ft_plugin_dir . '/*.toml'), '\n')
 
   " TOML を読み込み、キャッシュしておく
   for s:toml in s:tomls
     call dein#load_toml(s:toml, {'lazy': 0})
   endfor
 
-  for s:lazy_toml in s:lazy_tomls
+  for s:lazy_toml in s:lazy_tomls + s:ft_tomls
     call dein#load_toml(s:lazy_toml, {'lazy': 1})
   endfor
 
