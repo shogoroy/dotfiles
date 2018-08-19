@@ -1,3 +1,4 @@
 [[plugins]]
 repo = 'ekalinin/Dockerfile.vim'
 build = 'make'
+on_ft = ['yaml.docker-compose', 'Dockerfile']
