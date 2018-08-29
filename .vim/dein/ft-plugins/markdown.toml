@@ -11,6 +11,9 @@ let g:vim_markdown_folding_disabled=1
 
 [[plugins]]
 repo = 'kannokanno/previm'
+hook_add = '''
+let g:previm_open_cmd = 'open -a Google\ Chrome'
+'''
 
 [[plugins]]
 repo = 'tyru/open-browser.vim'
