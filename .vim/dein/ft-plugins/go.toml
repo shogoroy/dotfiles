@@ -6,3 +6,6 @@ on_ft = 'go'
 [[plugins]]
 repo = 'fatih/vim-go'
 on_ft = 'go'
+hook_add = '''
+let g:go_jump_to_error = 0
+'''
