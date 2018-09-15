@@ -1,11 +1,11 @@
 [[plugins]]
 repo = 'delphinus35/typescript-vim'
 rev  = 'colorize-template-strings'
-on_ft = 'typescript'
+on_ft = ['typescript']
 
 [[plugins]]
 repo  = 'Quramy/tsuquyomi'
-on_ft = 'typescript'
-hook_add = '''
+on_ft = ['typescript']
+hook_source = '''
 let g:tsuquyomi_completion_detail = 1
 '''

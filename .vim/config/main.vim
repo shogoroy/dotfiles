@@ -9,7 +9,6 @@ set cursorline
 set list
 set listchars=tab:»-,trail:-,eol:↲,extends:»,precedes:«,nbsp:%
 set scrolloff=3
-:syntax on
 set cmdheight=2
 
 " set cursorcolumn

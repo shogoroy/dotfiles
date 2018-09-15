@@ -1,3 +1,4 @@
+syntax enable
 if has("unix")
   let s:os = system("uname")
   if s:os == "Darwin\n"
