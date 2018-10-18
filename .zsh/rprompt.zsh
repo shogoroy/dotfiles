@@ -28,7 +28,7 @@ function get-branch-status-color {
         output=`git status --short 2> /dev/null`
         if [ -z "$output" ]; then
             res=':' # status Clean
-            color='%{'${fg[cyan]}'%}'
+            color='%{'${fg[green]}'%}'
         elif [[ $output =~ "[\n]?\?\? " ]]; then
             res='?:' # Untracked
             color='%{'${fg[yellow]}'%}'
@@ -37,7 +37,7 @@ function get-branch-status-color {
             color='%{'${fg[red]}'%}'
         else
             res='A:' # Added to commit
-            color='%{'${fg[green]}'%}'
+            color='%{'${fg[cyan]}'%}'
         fi
         # echo ${color}${res}'%{'${reset_color}'%}'
         echo ${color} # 色だけ返す
