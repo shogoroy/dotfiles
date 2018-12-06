@@ -32,18 +32,18 @@ init-vim: \
 	~/.vimrc
 
 ~/.vimrc:
-	ln -sf $(CURDIR)/.vimrc ~/.vimrc
+	ln -sf $(CURDIR)/vimrc ~/.vimrc
 
 init-zsh: \
 	~/.zshrc
 
 ~/.zshrc:
-	ln -sf $(CURDIR)/.zshrc ~/.zshrc
+	ln -sf $(CURDIR)/zshrc ~/.zshrc
 
 init-tmux: ~/.tmux.conf
 ~/.tmux.conf:
-	ln -sf $(CURDIR)/.tmux.conf ~/.tmux.conf
+	ln -sf $(CURDIR)/tmux.conf ~/.tmux.conf
 
 init-ctags: ~/.ctags.d
 ~/.ctags.d:
-	ln -sf $(CURDIR)/.ctags.d ~/.ctags.d
+	ln -sf $(CURDIR)/ctags.d ~/.ctags.d
