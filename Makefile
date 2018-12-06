@@ -15,6 +15,7 @@ install: \
 
 clean:
 	-rm ~/.config/nvim \
+		~/.vim\
 		~/.vimrc \
 		~/.zshrc \
 		~/.ctags.d \
