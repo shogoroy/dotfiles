@@ -10,14 +10,16 @@ install: \
 	init-vim \
 	init-zsh \
 	init-tmux \
-	init-ctags
+	init-ctags \
+	init-git
 
 clean:
 	-rm ~/.config/nvim \
 		~/.vimrc \
 		~/.zshrc \
 		~/.ctags.d \
-		~/.tmux.conf
+		~/.tmux.conf \
+		~/.gitignore
 
 init-nvim: \
 	~/.config/nvim
@@ -49,3 +51,9 @@ init-tmux: ~/.tmux.conf
 init-ctags: ~/.ctags.d
 ~/.ctags.d:
 	ln -sf $(CURDIR)/ctags.d ~/.ctags.d
+
+init-git: \
+	~/.gitignore
+~/.gitignore:
+	ln -sf $(CURDIR)/gitignore ~/.gitignore
+
