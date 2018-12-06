@@ -1,3 +1,3 @@
-for zsh in `pwd`/.zsh/**/*.zsh; do
+for zsh in `dirname $(readlink ~/.zshrc)`/.zsh/**/*.zsh; do
   source $zsh
 done
