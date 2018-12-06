@@ -29,8 +29,10 @@ init-nvim: \
 	ln -sf $(CURDIR)/nvim ~/.config/nvim
 
 init-vim: \
+	~/.vim \
 	~/.vimrc
-
+~/.vim:
+	ln -sf $(CURDIR)/vim ~/.vim
 ~/.vimrc:
 	ln -sf $(CURDIR)/vimrc ~/.vimrc
 
