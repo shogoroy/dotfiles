@@ -20,7 +20,8 @@ clean:
 		~/.zshrc \
 		~/.ctags.d \
 		~/.tmux.conf \
-		~/.gitignore
+		~/.gitconfig \
+		~/.config/git
 
 init-nvim: \
 	~/.config/nvim
@@ -54,7 +55,11 @@ init-ctags: ~/.ctags.d
 	ln -sf $(CURDIR)/ctags.d ~/.ctags.d
 
 init-git: \
-	~/.gitignore
-~/.gitignore:
-	ln -sf $(CURDIR)/gitignore ~/.gitignore
+	~/.gitconfig \
+	~/.config/git
+~/.gitconfig: 
+	ln -sf $(CURDIR)/gitconfig ~/.gitconfig
+~/.config/git: ~/.config
+	ln -sf $(CURDIR)/git ~/.config/git
+
 
