@@ -1,3 +1,3 @@
-for zsh in ~/.zsh/**/*.zsh; do
+for zsh in `pwd`/.zsh/**/*.zsh; do
   source $zsh
 done
