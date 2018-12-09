@@ -1,0 +1,78 @@
+[[plugins]]
+repo = 'Shougo/denite.nvim'
+
+[[plugins]]
+repo = 'scrooloose/nerdtree'
+hook_add = '''
+let g:NERDTreeShowHidden=1
+nnoremap <silent><C-e> :NERDTreeToggle<CR>
+" autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+'''
+
+[[plugins]]
+repo = 'lambdalisue/vim-findent'
+
+[[plugins]]
+repo = 'prettier/vim-prettier'
+build = 'npm install'
+on_ft = ['css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html']
+hook_add = '''
+let g:prettier#autoformat = 0
+autocmd BufWritePre *.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
+'''
+
+#
+# toml
+#
+
+[[plugins]]
+repo = 'cespare/vim-toml'
+on_ft = ['toml']
+
+#
+# markdown
+#
+
+[[plugins]]
+repo = 'rcmdnk/vim-markdown'
+on_ft = ['markdown']
+
+[[plugins]]
+repo = 'dhruvasagar/vim-table-mode'
+on_ft = ['markdown']
+hook_add = '''
+let g:table_mode_corner = '|'
+'''
+
+#
+# typescript
+#
+
+[[plugins]]
+repo = 'leafgarland/typescript-vim'
+on_ft = ['typescript']
+
+[[plugins]]
+repo = 'Quramy/tsuquyomi'
+on_ft = ['typescript']
+hook_source = '''
+let g:tsuquyomi_completion_detail = 1
+let g:tsuquyomi_shortest_import_path = 1
+'''
+
+#
+# go
+#
+
+[[plugins]]
+repo = 'fatih/vim-go'
+on_ft = ['go']
+
+[[plugins]]
+repo = 'zchee/deoplete-go'
+build = 'make'
+on_ft = ['go']
+hook_source = '''
+let g:deoplete#sources#go#gocode_binary = $GOPATH . '/bin/gocode'
+let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
+'''

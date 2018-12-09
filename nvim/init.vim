@@ -1,1 +1,1 @@
-set guicursor=
+runtime! rc/*.vim
