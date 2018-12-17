@@ -27,3 +27,9 @@ let g:ale_fixers = {
       \ 'typescript': ['tslint']
       \ }
 '''
+
+[[plugins]]
+repo = "airblade/vim-gitgutter"
+
+[[plugins]]
+repo = "tpope/vim-fugitive"
