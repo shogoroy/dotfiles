@@ -45,6 +45,20 @@ let g:table_mode_corner = '|'
 '''
 
 #
+# javascript
+#
+
+[[plugins]]
+repo = 'pangloss/vim-javascript'
+on_ft = ['javascript']
+hook_source = '''
+let g:javascript_plugin_jsdoc = 1
+'''
+
+[[plugins]]
+repo = 'jelera/vim-javascript-syntax'
+
+#
 # typescript
 #
 
@@ -76,9 +90,11 @@ hook_source = '''
 let g:deoplete#sources#go#gocode_binary = $GOPATH . '/bin/gocode'
 let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
 '''
+
 #
 # sql
 #
+
 [[plugins]]
 repo = 'vim-scripts/dbext.vim'
 on_ft = ['sql']
