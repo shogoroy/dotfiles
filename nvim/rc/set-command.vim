@@ -1,6 +1,7 @@
 " setting
 set title
 set fenc=utf-8
+set noswapfile
 
 " looks
 set cursorline
