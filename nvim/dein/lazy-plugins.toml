@@ -34,14 +34,22 @@ on_ft = ['toml']
 #
 
 [[plugins]]
-repo = 'rcmdnk/vim-markdown'
+repo = 'plasticboy/vim-markdown'
 on_ft = ['markdown']
+hook_source = '''
+autocmd BufRead,BufNewFile *.mkd  set filetype=markdown
+autocmd BufRead,BufNewFile *.md  set filetype=markdown
+" Need: kannokanno/previm
+nnoremap <silent> <C-p> :PrevimOpen<CR> " Ctrl-pでプレビュー
+" 自動で折りたたまないようにする
+let g:vim_markdown_folding_disabled=1
+'''
 
 [[plugins]]
-repo = 'dhruvasagar/vim-table-mode'
+repo = 'kannokanno/previm'
 on_ft = ['markdown']
-hook_add = '''
-let g:table_mode_corner = '|'
+hook_source = '''
+let g:previm_open_cmd = 'open -a Google\ Chrome'
 '''
 
 #
