@@ -24,10 +24,10 @@ endif
 "
 call dein#begin(s:dein_dir)
 
-let g:dein_dir    = expand('~/.config/nvim/dein')
-call dein#load_toml(g:dein_dir . '/plugins.toml', {'lazy': 0})
-call dein#load_toml(g:dein_dir . '/lazy-plugins.toml', {'lazy' : 1})
-call dein#load_toml(g:dein_dir . '/ft-plugins.toml')
+let s:dein_toml_dir = expand('~/.config/nvim/dein')
+call dein#load_toml(s:dein_toml_dir . '/plugins.toml', {'lazy': 0})
+call dein#load_toml(s:dein_toml_dir . '/lazy-plugins.toml', {'lazy' : 1})
+call dein#load_toml(s:dein_toml_dir . '/ft-plugins.toml')
 
 call dein#end()
 call dein#save_state()
