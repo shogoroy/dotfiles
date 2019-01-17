@@ -107,3 +107,14 @@ let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const
 repo = 'vim-scripts/dbext.vim'
 on_ft = ['sql']
 
+#
+# plantuml
+#
+
+[[plugins]]
+repo = 'aklt/plantuml-syntax'
+on_ft = ['plantuml']
+hook_source = '''
+au FileType plantuml command! OpenUml :!open -a Google\ Chrome %
+nnoremap <silent> <C-p> :OpenUml<CR>
+'''
