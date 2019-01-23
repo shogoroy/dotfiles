@@ -8,6 +8,11 @@ repo = 'editorconfig/editorconfig-vim'
 repo = 'Shougo/deoplete.nvim'
 hook_add = '''
 let g:deoplete#enable_at_startup = 1
+autocmd FileType typescript let g:deoplete#disable_auto_complete = 1
+
+inoremap <expr> <C-o> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 '''
 
 [[plugins]]
