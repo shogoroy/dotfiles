@@ -11,7 +11,8 @@ install: \
 	init-zsh \
 	init-tmux \
 	init-ctags \
-	init-git
+	init-git \
+	init-editorconfig
 
 clean:
 	-rm ~/.config/nvim \
@@ -21,7 +22,8 @@ clean:
 		~/.ctags.d \
 		~/.tmux.conf \
 		~/.gitconfig \
-		~/.config/git
+		~/.config/git \
+		~/.editorconfig
 
 init-nvim: \
 	~/.config/nvim
@@ -57,9 +59,11 @@ init-ctags: ~/.ctags.d
 init-git: \
 	~/.gitconfig \
 	~/.config/git
-~/.gitconfig: 
+~/.gitconfig:
 	ln -sf $(CURDIR)/gitconfig ~/.gitconfig
 ~/.config/git: ~/.config
 	ln -sf $(CURDIR)/git ~/.config/git
 
-
+init-editorconfig: ~/.editorconfig
+~/.editorconfig:
+	ln -sf $(CURDIR)/.editorconfig ~/.editorconfig
