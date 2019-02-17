@@ -108,6 +108,14 @@ repo = 'vim-scripts/dbext.vim'
 on_ft = ['sql']
 
 #
+#
+#
+
+[[plugins]]
+repo = 'delphinus/vim-firestore'
+on_ft = ['firestore']
+
+#
 # plantuml
 #
 
