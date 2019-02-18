@@ -13,3 +13,6 @@ fi
 # cdgo
 alias cdgo='cd $GOPATH'
 
+# git
+alias gs='git status'
+alias gc='git fetch --prune && git branch --merged | xargs git branch -d'
