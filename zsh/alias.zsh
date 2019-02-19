@@ -15,4 +15,4 @@ alias cdgo='cd $GOPATH'
 
 # git
 alias gs='git status'
-alias gc='git fetch --prune && git branch --merged | xargs git branch -d'
+alias gclean='git checkout master && git fetch --prune && git pull && git branch --merged | xargs git branch -d'
