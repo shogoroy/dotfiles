@@ -22,6 +22,20 @@ autocmd BufWritePre *.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.htm
 '''
 
 #
+# language-server
+#
+
+[[plugins]]
+repo = 'neoclide/coc.nvim'
+build = 'yarn install'
+hook_add = '''
+nnoremap <silent> <TAB>  :<C-u>CocNext<CR>
+nnoremap <silent> <S-TAB>  :<C-u>CocPrev<CR>
+
+autocmd BufRead,BufNewFile *.js,*.ts CocInstall coc-tsserver
+'''
+
+#
 # toml
 #
 
@@ -74,13 +88,13 @@ repo = 'jelera/vim-javascript-syntax'
 repo = 'leafgarland/typescript-vim'
 on_ft = ['typescript']
 
-[[plugins]]
-repo = 'Quramy/tsuquyomi'
-on_ft = ['typescript']
-hook_source = '''
-let g:tsuquyomi_completion_detail = 1
-let g:tsuquyomi_shortest_import_path = 1
-'''
+# [[plugins]]
+# repo = 'Quramy/tsuquyomi'
+# on_ft = ['typescript']
+# hook_source = '''
+# let g:tsuquyomi_completion_detail = 1
+# let g:tsuquyomi_shortest_import_path = 1
+# '''
 
 #
 # go
@@ -90,14 +104,14 @@ let g:tsuquyomi_shortest_import_path = 1
 repo = 'fatih/vim-go'
 on_ft = ['go']
 
-[[plugins]]
-repo = 'zchee/deoplete-go'
-build = 'make'
-on_ft = ['go']
-hook_source = '''
-let g:deoplete#sources#go#gocode_binary = $GOPATH . '/bin/gocode'
-let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
-'''
+# [[plugins]]
+# repo = 'zchee/deoplete-go'
+# build = 'make'
+# on_ft = ['go']
+# hook_source = '''
+# let g:deoplete#sources#go#gocode_binary = $GOPATH . '/bin/gocode'
+# let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
+# '''
 
 #
 # sql
