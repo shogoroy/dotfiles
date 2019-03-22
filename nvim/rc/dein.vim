@@ -26,8 +26,8 @@ call dein#begin(s:dein_dir)
 
 let s:dein_toml_dir = expand('~/.config/nvim/dein')
 call dein#load_toml(s:dein_toml_dir . '/plugins.toml', {'lazy': 0})
+call dein#load_toml(s:dein_toml_dir . '/coc-plugins.toml', {'lazy': 0})
 call dein#load_toml(s:dein_toml_dir . '/lazy-plugins.toml', {'lazy' : 1})
-call dein#load_toml(s:dein_toml_dir . '/ft-plugins.toml')
 
 call dein#end()
 call dein#save_state()
