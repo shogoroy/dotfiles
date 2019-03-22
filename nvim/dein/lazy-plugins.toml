@@ -28,9 +28,17 @@ autocmd BufWritePre *.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.htm
 [[plugins]]
 repo = 'neoclide/coc.nvim'
 build = 'yarn install'
+on_ft = [
+  'go',
+  'json',
+  'typescript',
+  'yaml'
+]
 hook_add = '''
 let g:coc_global_extensions = [
+  \ 'coc-eslint',
   \ 'coc-json',
+  \ 'coc-tslint',
   \ 'coc-tsserver',
   \ 'coc-yaml'
   \ ]
