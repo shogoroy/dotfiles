@@ -24,3 +24,6 @@ alias gd='gitdiff'
 alias gdiff='gitdiff'
 alias gfp='gitfp'
 alias gs='gits'
+
+# kube
+alias kube="kubectl"
