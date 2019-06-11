@@ -74,13 +74,12 @@ repo = 'jelera/vim-javascript-syntax'
 repo = 'leafgarland/typescript-vim'
 on_ft = ['typescript']
 
-# [[plugins]]
-# repo = 'Quramy/tsuquyomi'
-# on_ft = ['typescript']
-# hook_source = '''
-# let g:tsuquyomi_completion_detail = 1
-# let g:tsuquyomi_shortest_import_path = 1
-# '''
+[[plugins]]
+repo = 'ianks/vim-tsx'
+on_ft = ['typescript.tsx']
+hook_add = '''
+syntax enable
+'''
 
 #
 # go
@@ -89,15 +88,6 @@ on_ft = ['typescript']
 [[plugins]]
 repo = 'fatih/vim-go'
 on_ft = ['go']
-
-# [[plugins]]
-# repo = 'zchee/deoplete-go'
-# build = 'make'
-# on_ft = ['go']
-# hook_source = '''
-# let g:deoplete#sources#go#gocode_binary = $GOPATH . '/bin/gocode'
-# let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
-# '''
 
 #
 # sql
