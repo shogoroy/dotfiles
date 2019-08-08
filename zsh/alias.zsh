@@ -10,11 +10,11 @@ else
   export LS_COLORS="${LS_COLORS}:di=01;36"
 fi
 
-# cdgo
+# go
 alias cdgo='cd $GOPATH'
 
 # git
-alias gitclean='git checkout master && git fetch --prune && git pull && git branch --merged | xargs git branch -d'
+alias gitclean='git checkout master && git fetch --prune && git pull && git branch --merged | grep -v "*"| xargs git branch -d'
 alias gitdiff='git diff'
 alias gitfp='git fetch --prune'
 alias gits='git status'
