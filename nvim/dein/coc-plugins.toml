@@ -1,6 +1,7 @@
 [[plugins]]
 repo = 'neoclide/coc.nvim'
-build = 'yarn install'
+merged = 0
+build = 'yarn install --frozen-lockfile'
 hook_add = '''
 let g:coc_global_extensions = [
   \ 'coc-eslint',
