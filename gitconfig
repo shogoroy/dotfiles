@@ -4,3 +4,6 @@
 	editor = nvim
 [log]
 	decorate = short
+[user]
+	email = shogoro.yoshida@gmail.com
+	name = Shogoro Yoshida

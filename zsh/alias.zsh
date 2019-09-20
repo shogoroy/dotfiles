@@ -25,5 +25,8 @@ alias gdiff='gitdiff'
 alias gfp='gitfp'
 alias gs='gits'
 
+# github
+eval "$(hub alias -s)"
+
 # kube
 alias kube="kubectl"
