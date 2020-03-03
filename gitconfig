@@ -7,3 +7,6 @@
 [user]
 	email = shogoro.yoshida@gmail.com
 	name = Shogoro Yoshida
+[url "git@github.com:"]
+	pushInsteadOf = https://github.com
+	insteadOf = https://github.com
