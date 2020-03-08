@@ -10,7 +10,6 @@ install: \
 	init-vim \
 	init-zsh \
 	init-tmux \
-	init-ctags \
 	init-git \
 	init-editorconfig
 
@@ -19,7 +18,6 @@ clean:
 		~/.vim\
 		~/.vimrc \
 		~/.zshrc \
-		~/.ctags.d \
 		~/.tmux.conf \
 		~/.gitconfig \
 		~/.config/git \
@@ -51,10 +49,6 @@ init-zsh: \
 init-tmux: ~/.tmux.conf
 ~/.tmux.conf:
 	ln -sf $(CURDIR)/tmux.conf ~/.tmux.conf
-
-init-ctags: ~/.ctags.d
-~/.ctags.d:
-	ln -sf $(CURDIR)/ctags.d ~/.ctags.d
 
 init-git: \
 	~/.gitconfig \
