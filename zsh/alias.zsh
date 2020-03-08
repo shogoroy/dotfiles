@@ -25,8 +25,18 @@ alias gdiff='gitdiff'
 alias gfp='gitfp'
 alias gs='gits'
 
-# github
-eval "$(hub alias -s)"
-
 # kube
 alias kube="kubectl"
+
+# fzf
+alias fzf="fzf-tmux"
+
+if builtin command -v ghq > /dev/null 2>&1 ; then
+  flook() {
+    local dir
+    dir=$(ghq list | fzf +m)
+    if [[ "$dir" != "" ]]; then
+      cd "`ghq root`/$dir"
+    fi
+  }
+fi
