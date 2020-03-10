@@ -12,6 +12,22 @@ nnoremap <silent><C-e> :NERDTreeToggle<CR>
 [[plugins]]
 repo = 'lambdalisue/vim-findent'
 
+#
+# fzf
+#
+
+[[plugins]]
+repo = "junegunn/fzf"
+build = './install'
+
+[[plugins]]
+repo = "junegunn/fzf.vim"
+depends = "fzf"
+
+#
+# prettier
+#
+
 [[plugins]]
 repo = 'prettier/vim-prettier'
 build = 'npm install'
