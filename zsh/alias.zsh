@@ -40,3 +40,14 @@ if builtin command -v ghq > /dev/null 2>&1 ; then
     fi
   }
 fi
+
+if builtin command -v nvim > /dev/null 2>&1 ; then
+  fnvim() {
+    local dir
+    dir=$(fzf +m)
+    if [[ "$dir" != "" ]]; then
+      nvim $dir
+    fi
+  }
+fi
+
