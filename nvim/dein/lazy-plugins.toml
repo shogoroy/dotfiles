@@ -18,12 +18,11 @@ repo = 'lambdalisue/vim-findent'
 
 [[plugins]]
 repo = "junegunn/fzf"
-build = './install'
+build = './install --bin'
 
 [[plugins]]
 repo = "junegunn/fzf.vim"
-depends = "fzf"
-
+depends = ["fzf"]
 #
 # prettier
 #
