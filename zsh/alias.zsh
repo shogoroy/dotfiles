@@ -28,7 +28,9 @@ alias gs='gits'
 # kube
 alias kube="kubectl"
 
+#
 # fzf
+#
 alias fzf="fzf-tmux"
 
 if builtin command -v ghq > /dev/null 2>&1 ; then
@@ -51,3 +53,9 @@ if builtin command -v nvim > /dev/null 2>&1 ; then
   }
 fi
 
+fgbr() {
+  local branches branch
+  branches=$(git branch --all | grep -v HEAD)
+  branch=$(echo "$branches" | fzf -d $(( 2 + $(wc -l <<< "$branches") )) +m | sed "s/.* //" | sed "s#remotes/[^/]*/##")
+  print -z "git checkout $branch"
+}
