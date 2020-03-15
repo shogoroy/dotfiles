@@ -28,6 +28,13 @@ alias gs='gits'
 # kube
 alias kube="kubectl"
 
+# grep
+if builtin command -v grep > /dev/null 2>&1 ; then
+  alias grep='grep --color=auto'
+  alias egrep='egrep --color=auto'
+  alias fgrep='fgrep --color=auto'
+fi
+
 #
 # fzf
 #
