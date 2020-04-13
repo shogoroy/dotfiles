@@ -23,6 +23,14 @@ build = './install --bin'
 [[plugins]]
 repo = "junegunn/fzf.vim"
 depends = ["fzf"]
+
+#
+# vue
+#
+[[plugins]]
+repo = 'posva/vim-vue'
+on_ft = ['vue']
+
 #
 # prettier
 #

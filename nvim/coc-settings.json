@@ -30,7 +30,8 @@
     "javascript",
     "javascriptreact",
     "typescript",
-    "typescriptreact"
+    "typescriptreact",
+    "vue"
   ],
   "eslint.autoFixOnSave": true
 }
