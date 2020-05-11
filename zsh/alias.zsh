@@ -14,8 +14,10 @@ fi
 alias cdgo='cd $GOPATH'
 
 # git
-local default_branch=$(git symbolic-ref refs/remotes/origin/HEAD | awk -F'[/]' '{print $NF}')
-alias gitclean='git checkout $default_branch && git fetch --prune && git pull && git branch --merged | grep -v "*"| xargs git branch -d'
+gitclean() {
+  local default_branch=$(git symbolic-ref refs/remotes/origin/HEAD | awk -F'[/]' '{print $NF}')
+  git checkout $default_branch && git fetch --prune && git pull && git branch --merged | grep -v "*"| xargs git branch -d
+}
 alias gitdiff='git diff'
 alias gitfp='git fetch --prune'
 alias gits='git status'
