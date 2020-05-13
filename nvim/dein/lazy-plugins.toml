@@ -113,6 +113,13 @@ repo = 'fatih/vim-go'
 on_ft = ['go']
 
 #
+# perl
+#
+[[plugins]]
+repo = 'vim-perl/vim-perl'
+on_ft = ['perl']
+
+#
 # sql
 #
 
