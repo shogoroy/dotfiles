@@ -9,6 +9,7 @@ set list
 set listchars=tab:»-,trail:-,extends:»,precedes:«,nbsp:%
 set scrolloff=4
 set cmdheight=2
+set number
 
 " set cursor
 set virtualedit=onemore
