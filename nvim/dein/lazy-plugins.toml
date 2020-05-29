@@ -5,7 +5,7 @@ repo = 'Shougo/denite.nvim'
 repo = 'scrooloose/nerdtree'
 hook_add = '''
 let g:NERDTreeShowHidden=1
-nnoremap <silent><C-e> :NERDTreeToggle<CR>
+nnoremap <silent><C-e> :NERDTreeToggle<CR> :NERDTreeToggle<CR> :NERDTreeFind<CR>
 " autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 '''
 
