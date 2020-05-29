@@ -5,6 +5,7 @@ set noswapfile
 
 " looks
 set cursorline
+set cursorcolumn
 set list
 set listchars=tab:»-,trail:-,extends:»,precedes:«,nbsp:%
 set scrolloff=4
