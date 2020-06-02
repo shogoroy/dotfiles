@@ -16,6 +16,8 @@ zplug "x-motemen/ghq", from:gh-r, as:command, rename-to:ghq
 zplug "junegunn/fzf-bin", as:command, from:gh-r, rename-to:fzf
 zplug "junegunn/fzf", as:command, use:bin/fzf-tmux
 
+zplug "plugins/git", from:oh-my-zsh
+
 # Install plugins if there are plugins that have not been installed
 if ! zplug check --verbose; then
   zplug install
