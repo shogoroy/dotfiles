@@ -38,10 +38,10 @@ on_ft = ['vue']
 [[plugins]]
 repo = 'prettier/vim-prettier'
 build = 'npm install'
-on_ft = ['css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html']
+on_ft = ['less', 'scss', 'json', 'graphql', 'markdown', 'yaml']
 hook_add = '''
 let g:prettier#autoformat = 0
-autocmd BufWritePre *.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
+autocmd BufWritePre *.less,*.scss,*.json,*.graphql,*.md,*.yaml PrettierAsync
 '''
 
 #
@@ -128,7 +128,7 @@ repo = 'vim-scripts/dbext.vim'
 on_ft = ['sql']
 
 #
-#
+# firestore
 #
 
 [[plugins]]
@@ -146,3 +146,10 @@ hook_source = '''
 au FileType plantuml command! OpenUml :!open -a Google\ Chrome %
 nnoremap <silent> <C-p> :OpenUml<CR>
 '''
+
+#
+# nginx
+#
+[[plugins]]
+repo = 'chr4/nginx.vim'
+on_ft = ['conf']
