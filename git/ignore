@@ -1,4 +1,6 @@
 .DS_Store
+.local
+
 /tags
 credentials.yaml
 credential.yaml
