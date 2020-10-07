@@ -11,7 +11,8 @@ let g:coc_global_extensions = [
   \ 'coc-go',
   \ 'coc-vetur',
   \ 'coc-yaml',
-  \ 'coc-phpls'
+  \ 'coc-phpls',
+  \ 'coc-snippets'
   \ ]
 
 " Use tab for trigger completion with characters ahead and navigate.
