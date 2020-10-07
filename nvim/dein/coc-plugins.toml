@@ -12,6 +12,7 @@ let g:coc_global_extensions = [
   \ 'coc-vetur',
   \ 'coc-yaml',
   \ 'coc-phpls',
+  \ 'coc-perl',
   \ 'coc-snippets'
   \ ]
 
