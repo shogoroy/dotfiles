@@ -148,4 +148,4 @@ nnoremap <silent> <C-p> :OpenUml<CR>
 #
 [[plugins]]
 repo = 'chr4/nginx.vim'
-on_ft = ['conf']
+on_ft = ['nginx']
