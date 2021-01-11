@@ -88,6 +88,7 @@ let g:javascript_plugin_jsdoc = 1
 
 [[plugins]]
 repo = 'jelera/vim-javascript-syntax'
+on_ft = ['javascript', 'javascript.jsx', 'javascriptreact']
 
 #
 # typescript
@@ -95,13 +96,17 @@ repo = 'jelera/vim-javascript-syntax'
 
 [[plugins]]
 repo = 'leafgarland/typescript-vim'
-on_ft = ['typescript']
+on_ft = ['typescript', 'typescriptreact']
 
 [[plugins]]
-repo = 'ianks/vim-tsx'
-on_ft = ['typescript.tsx']
+repo = 'MaxMEllon/vim-jsx-pretty'
+on_ft = ['javascriptreact', 'typescriptreact']
 hook_add = '''
-syntax enable
+hi jsxComponentName guifg=lightcyan
+hi jsxTagName guifg=lightskyblue
+
+hi jsxPunct guifg=lightskyblue
+hi jsxCloseString guifg=lightskyblue
 '''
 
 #
