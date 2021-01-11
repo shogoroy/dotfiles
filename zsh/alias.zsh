@@ -10,6 +10,12 @@ else
   export LS_COLORS="${LS_COLORS}:di=01;36"
 fi
 
+# sed
+if builtin command -v gsed > /dev/null 2>&1 ; then
+  alias sed='gsed'
+fi
+
+
 # go
 alias cdgo='cd $GOPATH'
 
