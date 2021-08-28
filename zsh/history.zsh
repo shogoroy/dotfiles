@@ -19,5 +19,8 @@ setopt hist_no_store
 # 補完時にヒストリを自動的に展開
 setopt hist_expand
 
+# タブ間のヒストリ共有
+setopt share_history
+
 # 開始と終了を記録
 setopt EXTENDED_HISTORY
