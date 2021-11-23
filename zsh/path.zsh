@@ -4,3 +4,5 @@ export PATH=$HOME/.nodebrew/current/bin:$PATH
 
 export GHQ_ROOT=$GOPATH/src
 export XDG_CONFIG_HOME=~/.config
+
+export PATH=$PATH:~/.cargo/bin

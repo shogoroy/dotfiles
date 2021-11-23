@@ -13,7 +13,8 @@ let g:coc_global_extensions = [
   \ 'coc-yaml',
   \ 'coc-phpls',
   \ 'coc-perl',
-  \ 'coc-snippets'
+  \ 'coc-snippets',
+  \ 'coc-rust-analyzer'
   \ ]
 
 " Use tab for trigger completion with characters ahead and navigate.
