@@ -27,14 +27,6 @@
       }
     }
   },
-  "eslint.autoFix": true,
-  "eslint.filetypes": [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact",
-    "vue"
-  ],
   "eslint.autoFixOnSave": true,
   "coc.preferences.formatOnType": true,
   "coc.preferences.formatOnSaveFiletypes": ["go"],

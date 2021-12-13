@@ -1,0 +1,1 @@
+autocmd QuickFixCmdPost *grep* cwindow
