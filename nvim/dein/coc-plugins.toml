@@ -14,7 +14,8 @@ let g:coc_global_extensions = [
   \ 'coc-phpls',
   \ 'coc-perl',
   \ 'coc-snippets',
-  \ 'coc-rust-analyzer'
+  \ 'coc-rust-analyzer',
+  \ 'coc-tailwindcss'
   \ ]
 
 " Use tab for trigger completion with characters ahead and navigate.
