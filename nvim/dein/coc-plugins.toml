@@ -15,7 +15,8 @@ let g:coc_global_extensions = [
   \ 'coc-perl',
   \ 'coc-snippets',
   \ 'coc-rust-analyzer',
-  \ 'coc-tailwindcss'
+  \ 'coc-tailwindcss',
+  \ 'coc-explorer',
   \ ]
 
 " Use tab for trigger completion with characters ahead and navigate.
@@ -114,7 +115,7 @@ let g:lightline = {
 " Show all diagnostics
 nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
 " Manage extensions
-nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+" nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
 " Show commands
 nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
 " Find symbol of current document
@@ -130,4 +131,8 @@ nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
 " For Golang
 autocmd BufWritePre *.go :silent call CocAction('runCommand', 'editor.action.organizeImport')
+
+" For coc-explorer
+nnoremap <silent> <C-e> <Cmd>CocCommand explorer<CR>
+
 '''
