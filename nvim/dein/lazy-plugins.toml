@@ -39,7 +39,7 @@ on_ft = ['vue']
 repo = 'prettier/vim-prettier'
 build = 'npm install'
 on_ft = ['less', 'scss', 'json', 'graphql', 'markdown', 'yaml']
-hook_add = '''
+hook_source = '''
 let g:prettier#autoformat = 0
 autocmd BufWritePre *.less,*.scss,*.json,*.graphql,*.md,*.yaml PrettierAsync
 '''
@@ -101,7 +101,7 @@ on_ft = ['typescript', 'typescriptreact']
 [[plugins]]
 repo = 'MaxMEllon/vim-jsx-pretty'
 on_ft = ['javascriptreact', 'typescriptreact']
-hook_add = '''
+hook_source= '''
 hi jsxComponentName guifg=lightcyan
 hi jsxTagName guifg=lightskyblue
 
