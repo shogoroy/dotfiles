@@ -7,3 +7,5 @@ export GHQ_ROOT=$GOPATH/src
 export XDG_CONFIG_HOME=~/.config
 
 export PATH=$PATH:~/.cargo/bin
+
+export PATH=$PATH:/opt/homebrew/bin
