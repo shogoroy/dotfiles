@@ -60,7 +60,7 @@ if builtin command -v nvim > /dev/null 2>&1 ; then
     local dir
     dir=$(fzf +m)
     if [[ "$dir" != "" ]]; then
-      nvim $dir
+      print -z "nvim $dir"
     fi
   }
 fi
