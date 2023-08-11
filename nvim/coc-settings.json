@@ -32,5 +32,6 @@
   "coc.preferences.formatOnSaveFiletypes": ["go", "rust"],
   "go.goplsOptions": {
     "gofumpt": true
-  }
+  },
+  "explorer.file.showHiddenFiles": true
 }
