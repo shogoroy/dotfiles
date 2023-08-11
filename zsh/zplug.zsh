@@ -17,6 +17,7 @@ zplug "junegunn/fzf-bin", as:command, from:gh-r, rename-to:fzf
 zplug "junegunn/fzf", as:command, use:bin/fzf-tmux
 
 zplug "plugins/git", from:oh-my-zsh
+zplug "plugins/docker", from:oh-my-zsh
 zplug "plugins/docker-compose", from:oh-my-zsh
 
 zplug "carloscuesta/materialshell", use:materialshell, from:github, as:theme
