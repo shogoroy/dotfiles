@@ -58,9 +58,10 @@ fi
 if builtin command -v nvim > /dev/null 2>&1 ; then
   fnvim() {
     local dir
-    dir=$(fzf +m)
-    if [[ "$dir" != "" ]]; then
-      print -z "nvim $dir"
+    dir=${1:="."}
+    file=$(find $dir | fzf +m)
+    if [[ "$file" != "" ]]; then
+      print -z "nvim $file"
     fi
   }
 fi
