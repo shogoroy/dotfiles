@@ -12,6 +12,30 @@ let g:blamer_enabled = 1
 let g:blamer_date_format = '%Y/%m/%d %H:%M'
 '''
 
+[[plugins]]
+repo = 'github/copilot.vim'
+on_ft = [
+  'typescript', 'typescriptreact',
+]
+hook_source = '''
+autocmd BufRead,BufNewFile * Copilot enable
+'''
+
+#
+# Frontend
+#
+[[plugins]]
+repo = 'norcalli/nvim-colorizer.lua'
+on_ft = [
+  'javascript', 'javascript.jsx', 'javascriptreact',
+  'typescript', 'typescriptreact',
+  'html', 'tt2html',
+  'css', 'sass', 'scss'
+]
+hook_source = '''
+set termguicolors
+'''
+
 #
 # fzf
 #
