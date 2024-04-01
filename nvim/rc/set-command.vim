@@ -30,3 +30,6 @@ set smartcase
 set wrapscan
 set incsearch
 set inccommand=split
+
+" mouse
+set mouse=
