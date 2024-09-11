@@ -72,3 +72,10 @@ fgbr() {
   branch=$(echo "$branches" | fzf -d $(( 2 + $(wc -l <<< "$branches") )) +m | sed "s/.* //" | sed "s#remotes/[^/]*/##")
   print -z "git checkout $branch"
 }
+
+fgm() {
+  local branches branch
+  branches=$(git branch --all | grep -v HEAD)
+  branch=$(echo "$branches" | fzf -d $(( 2 + $(wc -l <<< "$branches") )) +m | sed "s/.* //" | sed "s#remotes/[^/]*/##")
+  print -z "git merge $branch"
+}
