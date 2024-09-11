@@ -80,7 +80,7 @@ fgm() {
   print -z "git merge $branch"
 }
 
-fgd() {
+fnvimgd() {
   local files file
   files=$(git diff --name-only $1)
   file=$(echo "$files" | fzf -d $(( 2 + $(wc -l <<< "$files") )) +m | sed "s/.* //" | sed "s#remotes/[^/]*/##")
