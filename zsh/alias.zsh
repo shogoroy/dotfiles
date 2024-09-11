@@ -79,3 +79,10 @@ fgm() {
   branch=$(echo "$branches" | fzf -d $(( 2 + $(wc -l <<< "$branches") )) +m | sed "s/.* //" | sed "s#remotes/[^/]*/##")
   print -z "git merge $branch"
 }
+
+fgd() {
+  local files file
+  files=$(git diff --name-only $1)
+  file=$(echo "$files" | fzf -d $(( 2 + $(wc -l <<< "$files") )) +m | sed "s/.* //" | sed "s#remotes/[^/]*/##")
+  print -z "nvim $file"
+}
