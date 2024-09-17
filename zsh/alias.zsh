@@ -12,7 +12,7 @@ fi
 
 # sed
 if builtin command -v gsed > /dev/null 2>&1 ; then
-  alias sed='gsed'
+  sed() { gsed -E "$@"; }
 fi
 
 
