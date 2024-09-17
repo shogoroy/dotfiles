@@ -82,9 +82,11 @@ fgm() {
 
 fnvimgd() {
   local files file
-  files=$(git diff --name-only $1)
+  files=$(git diff --name-only $1 | uniq)
   file=$(echo "$files" | fzf -d $(( 2 + $(wc -l <<< "$files") )) +m | sed "s/.* //" | sed "s#remotes/[^/]*/##")
   if [[ "$file" != "" ]]; then
     print -z "nvim $file"
   fi
 }
+
+alias nvimgd="git diff --name-only | uniq | xargs nvim"
