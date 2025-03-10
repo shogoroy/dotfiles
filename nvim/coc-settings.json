@@ -34,5 +34,6 @@
     "gofumpt": true
   },
   "explorer.file.showHiddenFiles": true,
-  "explorer.file.reveal.whenOpen": true
+  "explorer.file.reveal.whenOpen": true,
+  "snippets.ultisnips.pythonPrompt": false
 }
