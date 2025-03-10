@@ -15,7 +15,13 @@ let g:blamer_date_format = '%Y/%m/%d %H:%M'
 [[plugins]]
 repo = 'github/copilot.vim'
 on_ft = [
+  'javascript', 'javascript.jsx', 'javascriptreact',
   'typescript', 'typescriptreact',
+  'html', 'tt2html',
+  'css', 'sass', 'scss'
+
+  'go',
+  'yaml',
 ]
 hook_source = '''
 autocmd BufRead,BufNewFile * Copilot enable
