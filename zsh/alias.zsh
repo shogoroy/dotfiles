@@ -94,3 +94,7 @@ alias nvimgd="git diff --name-only | uniq | xargs nvim"
 gdl() {
   git diff --name-only $1 | uniq
 }
+
+ggr() {
+  git grep $1
+}
