@@ -43,8 +43,8 @@ on_ft = [
 
 [[plugins]] # CopilotChat
 repo = 'CopilotC-Nvim/CopilotChat.nvim'
-depends = ['copilot.vim', '/plenary.nvim']
-branch = 'canary'
+depends = ['copilot.vim', 'plenary.nvim']
+branch = 'main'
 on_ft = [
   'javascript', 'javascript.jsx', 'javascriptreact',
   'typescript', 'typescriptreact',
@@ -54,6 +54,10 @@ on_ft = [
   'go',
   'yaml',
 ]
+rev = 'main'
+lua_source = '''
+require('rc.copilot')
+'''
 
 
 #
