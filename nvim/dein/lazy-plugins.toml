@@ -6,7 +6,7 @@ repo = 'lambdalisue/vim-findent'
 
 [[plugins]]
 repo = 'APZelos/blamer.nvim'
-on_event = ['FocusLost', 'CursorHold']
+on_event = []
 hook_source = '''
 let g:blamer_enabled = 1
 let g:blamer_date_format = '%Y/%m/%d %H:%M'
