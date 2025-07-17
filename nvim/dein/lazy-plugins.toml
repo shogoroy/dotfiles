@@ -27,6 +27,35 @@ hook_source = '''
 autocmd BufRead,BufNewFile * Copilot enable
 '''
 
+
+[[plugins]] # CopilotChat (for curl, log wrapper) に必要
+repo = 'nvim-lua/plenary.nvim'
+on_ft = [
+  'javascript', 'javascript.jsx', 'javascriptreact',
+  'typescript', 'typescriptreact',
+  'html', 'tt2html',
+  'css', 'sass', 'scss'
+
+  'go',
+  'yaml',
+]
+
+
+[[plugins]] # CopilotChat
+repo = 'CopilotC-Nvim/CopilotChat.nvim'
+depends = ['copilot.vim', '/plenary.nvim']
+branch = 'canary'
+on_ft = [
+  'javascript', 'javascript.jsx', 'javascriptreact',
+  'typescript', 'typescriptreact',
+  'html', 'tt2html',
+  'css', 'sass', 'scss'
+
+  'go',
+  'yaml',
+]
+
+
 #
 # Frontend
 #
