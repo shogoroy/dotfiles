@@ -98,3 +98,18 @@ gdl() {
 ggr() {
   git grep $1
 }
+
+fgn() {
+  if [[ $1 == "" ]]; then
+    ggr
+    return
+  fi
+
+  local file
+
+  file=$(git grep $1 | fzf --ansi | cut -d: -f1)
+
+  if [[ "$file" != "" ]]; then
+      print -z "nvim $file"
+  fi
+}
