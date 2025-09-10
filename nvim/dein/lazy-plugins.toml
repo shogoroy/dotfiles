@@ -52,6 +52,7 @@ on_ft = [
   'css', 'sass', 'scss'
 
   'go',
+  'perl',
   'yaml',
 ]
 rev = 'main'
