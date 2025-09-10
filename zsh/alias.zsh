@@ -114,3 +114,15 @@ fgn() {
       print -z "nvim $file"
   fi
 }
+
+ffind() {
+  if [[ $1 == "" ]]; then
+    find ./ | fzf --ansi
+    return
+  fi
+
+  file=$(find $1 | fzf --ansi)
+  if [[ "$file" != "" ]]; then
+      print -z "$file"
+  fi
+}
