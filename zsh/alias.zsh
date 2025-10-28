@@ -116,12 +116,12 @@ fgn() {
 }
 
 ffind() {
-  if [[ $1 == "" ]]; then
-    find ./ | fzf --ansi
-    return
+  dir=./
+  if [[ -n "$1" ]]; then
+    dir=$1
   fi
 
-  file=$(find $1 | fzf --ansi)
+  file=$(find $dir | fzf --ansi)
   if [[ "$file" != "" ]]; then
       print -z "$file"
   fi
