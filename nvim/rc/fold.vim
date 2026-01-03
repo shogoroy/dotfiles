@@ -1,5 +1,3 @@
-set foldmethod=indent
-set foldlevel=99
 
 nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
 vnoremap <Space> zf
