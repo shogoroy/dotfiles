@@ -1,3 +1,5 @@
+vim.g.mapleader = "\\"
+
 -- lazy.nvim の自動インストール
 require("config.lazy")
 
