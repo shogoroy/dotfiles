@@ -108,10 +108,12 @@ fgn() {
 
   local file
 
-  file=$(git grep $1 | fzf --ansi | cut -d: -f1)
+  result=$(git grep -n $1 | fzf --ansi | cut -d: -f1,2)
+  file=$(echo $result | cut -d: -f1)
+  line_number=$(echo $result | cut -d: -f2)
 
   if [[ "$file" != "" ]]; then
-      print -z "nvim $file"
+      print -z "nvim +$line_number $file"
   fi
 }
 
