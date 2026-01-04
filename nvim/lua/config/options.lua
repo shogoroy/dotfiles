@@ -35,11 +35,11 @@ vim.opt.foldlevel = 99
 
 -- Migrated from rc/undo.vim
 -- ファイルを閉じた後でもUndoできるようにする
-local undo_dir = vim.fn.expand('$HOME/.cache/.vim/undo')
+local undo_dir = vim.fn.expand("$HOME/.cache/.vim/undo")
 if vim.fn.isdirectory(undo_dir) == 0 then
-  vim.fn.mkdir(undo_dir, 'p')
+  vim.fn.mkdir(undo_dir, "p")
 end
-if vim.fn.has('persistent_undo') == 1 then
+if vim.fn.has("persistent_undo") == 1 then
   vim.opt.undodir = undo_dir
   vim.opt.undofile = true
 end
@@ -49,7 +49,10 @@ vim.opt.guicursor = ""
 
 -- Migrated from rc/colors.vim
 -- vim.opt.termguicolors = true -- Already set above
-vim.cmd('syntax enable')
+vim.cmd("syntax enable")
 
 -- Migrated from rc/filetype.vim
-vim.cmd('filetype plugin indent on')
+vim.cmd("filetype plugin indent on")
+
+-- Set to false to disable auto format
+vim.g.lazyvim_eslint_auto_format = true
