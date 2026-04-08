@@ -3,7 +3,10 @@ vim.opt.termguicolors = true
 vim.opt.shiftwidth = 2
 vim.opt.tabstop = 2
 vim.opt.expandtab = true
-vim.opt.clipboard = "unnamedplus" -- クリップボード連携
+
+-- クリップボード連携
+vim.opt.clipboard = ""
+-- vim.opt.clipboard = "unnamedplus"
 
 -- Migrated from rc/set-command.vim
 vim.opt.title = true
@@ -56,3 +59,6 @@ vim.cmd("filetype plugin indent on")
 
 -- Set to false to disable auto format
 vim.g.lazyvim_eslint_auto_format = true
+
+-- LSP のシャットダウンを待機する時間を短縮
+vim.g.lsp_timeout = 200 -- デフォルトより短く設定 (ミリ単位)

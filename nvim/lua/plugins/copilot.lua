@@ -3,6 +3,7 @@ return {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
     event = "InsertEnter", -- 挿入モードに入った時に起動
+    enabled = false,
     config = function()
       require("copilot").setup({
         copilot_node_command = vim.fn.expand("$HOME") .. "/.n/n/versions/node/24.12.0/bin/node",
@@ -11,15 +12,15 @@ return {
           enabled = true,
           auto_trigger = true, -- 自動で提案を出す
           keymap = {
-            accept = "<C-l>",  -- Ctrl + l で提案を確定
-            next = "<M-]>",    -- Alt + ] で次の提案
-            prev = "<M-[>",    -- Alt + [ で前の提案
+            accept = "<C-l>", -- Ctrl + l で提案を確定
+            next = "<M-]>", -- Alt + ] で次の提案
+            prev = "<M-[>", -- Alt + [ で前の提案
             dismiss = "<C-]>",
           },
         },
         panel = { enabled = false },
         filetypes = {
-          markdown = true,   -- markdown でも有効にする
+          markdown = true, -- markdown でも有効にする
           typescript = true, -- allow specific filetype
           go = true,
           lua = true,
