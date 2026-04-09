@@ -11,7 +11,8 @@ install: \
 	init-zsh \
 	init-tmux \
 	init-git \
-	init-editorconfig
+	init-editorconfig \
+	init-claude
 
 clean:
 	-rm ~/.config/nvim \
@@ -21,7 +22,9 @@ clean:
 		~/.tmux.conf \
 		~/.gitconfig \
 		~/.config/git \
-		~/.editorconfig
+		~/.editorconfig \
+		~/.claude/settings.json \
+		~/.claude/skills
 
 init-nvim: \
 	~/.config/nvim
@@ -61,3 +64,16 @@ init-git: \
 init-editorconfig: ~/.editorconfig
 ~/.editorconfig:
 	ln -sf $(CURDIR)/.editorconfig ~/.editorconfig
+
+init-claude: \
+	~/.claude/settings.json \
+	~/.claude/skills
+
+~/.claude:
+	mkdir -p ~/.claude
+
+~/.claude/settings.json: ~/.claude
+	ln -sf $(CURDIR)/claude/settings.json ~/.claude/settings.json
+
+~/.claude/skills: ~/.claude
+	ln -sf $(CURDIR)/claude/skills ~/.claude/skills
