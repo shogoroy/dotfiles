@@ -7,3 +7,4 @@ credential.yaml
 credentials.yml
 credential.yml
 
+**/.claude/settings.local.json
