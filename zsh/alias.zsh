@@ -134,9 +134,17 @@ fwt() {
     echo "fwt: not inside a git repository" >&2
     return 1
   fi
-  local dir
-  dir=$(git worktree list | fzf +m | awk '{print $1}')
-  if [[ "$dir" != "" ]]; then
+  local selected dir
+  selected=$(git worktree list --porcelain | awk '
+    /^worktree / { path = $2; next }
+    /^branch refs\/heads\// {
+      branch = $2
+      sub(/^refs\/heads\//, "", branch)
+      print branch "\t" path
+    }
+  ' | fzf +m --with-nth=1 --delimiter=$'\t')
+  if [[ -n "$selected" ]]; then
+    dir=${selected#*$'\t'}
     cd "$dir"
   fi
 }
