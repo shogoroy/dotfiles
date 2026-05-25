@@ -148,3 +148,53 @@ fwt() {
     cd "$dir"
   fi
 }
+
+# git checkout 系のコマンドが「branch is already used by worktree at ...」で
+# 失敗した直後に gcowt を実行すると、そのエラーに含まれる worktree path へ cd する。
+# 引数でブランチ名を渡した場合は、そのブランチに対応する worktree path を
+# `git worktree list --porcelain` から引いて cd する。
+gcowt() {
+  if ! git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+    echo "gcowt: not inside a git repository" >&2
+    return 1
+  fi
+
+  local wt_path
+
+  if [[ -n "$1" ]]; then
+    # 引数指定: ブランチ名 → worktree path
+    local branch="$1"
+    wt_path=$(git worktree list --porcelain | awk -v b="refs/heads/$branch" '
+      /^worktree / { w = $2 }
+      $0 == "branch " b { print w; exit }
+    ')
+    if [[ -z "$wt_path" ]]; then
+      echo "gcowt: branch '$branch' に対応する worktree が見つからない" >&2
+      return 1
+    fi
+  else
+    # 引数なし: 直前のコマンドを再実行して stderr から worktree path を抽出
+    local last_cmd
+    last_cmd=$(fc -ln -1 2>/dev/null | sed 's/^[[:space:]]*//')
+    if [[ -z "$last_cmd" ]]; then
+      echo "gcowt: 直前のコマンドが取得できなかった" >&2
+      return 1
+    fi
+    # 安全のため git checkout / gco / git switch のみ再実行を許可する
+    if [[ ! "$last_cmd" =~ ^(gco|git[[:space:]]+(checkout|switch))[[:space:]] ]]; then
+      echo "gcowt: 直前のコマンドが git checkout 系ではない: $last_cmd" >&2
+      return 1
+    fi
+    local err
+    err=$(eval "$last_cmd" 2>&1 >/dev/null)
+    # "fatal: '<branch>' is already used by worktree at '<path>'" から path を取り出す
+    wt_path=$(echo "$err" | sed -nE "s/.*is already used by worktree at '([^']+)'.*/\1/p" | head -n1)
+    if [[ -z "$wt_path" ]]; then
+      echo "gcowt: 直前のエラーから worktree path を抽出できなかった" >&2
+      [[ -n "$err" ]] && echo "$err" >&2
+      return 1
+    fi
+  fi
+
+  cd "$wt_path"
+}
