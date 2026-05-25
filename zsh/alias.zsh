@@ -128,3 +128,15 @@ ffind() {
       print -z "$file"
   fi
 }
+
+fwt() {
+  if ! git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+    echo "fwt: not inside a git repository" >&2
+    return 1
+  fi
+  local dir
+  dir=$(git worktree list | fzf +m | awk '{print $1}')
+  if [[ "$dir" != "" ]]; then
+    cd "$dir"
+  fi
+}
