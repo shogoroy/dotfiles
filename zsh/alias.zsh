@@ -20,13 +20,31 @@ fi
 alias cdgo='cd $GOPATH'
 
 # git
+# remote の default branch に merge 済みの local branch と、それに紐づく worktree を削除する。
+# -n / --dry-run を渡すと、作業ツリーを変更せず「何が削除されるか」だけを表示する。
 gitclean() {
+  local dry_run=0
+  [[ "$1" == "-n" || "$1" == "--dry-run" ]] && dry_run=1
+
   local default_branch
-  default_branch=$(git symbolic-ref refs/remotes/origin/HEAD | awk -F'[/]' '{print $NF}')
-  git checkout "$default_branch" && git fetch --prune && git pull || return
+  default_branch=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | awk -F'[/]' '{print $NF}')
+  if [[ -z "$default_branch" ]]; then
+    echo "gitclean: origin/HEAD を解決できません。'git remote set-head origin -a' を試してください" >&2
+    return 1
+  fi
+
+  if (( dry_run )); then
+    # dry-run では checkout / pull を行わず、最新の merge 状態を反映するため fetch のみ実施する
+    git fetch --prune || return
+  else
+    git checkout "$default_branch" && git fetch --prune && git pull || return
+  fi
 
   local branches branch wt_path
-  branches=$(git branch --merged --format='%(refname:short)' | grep -v "^${default_branch}\$")
+  # NOTE: `git branch --merged --format=...` と書くと `--merged` が直後の `--format=...` を
+  #       比較対象コミットとして食ってしまい `fatal: malformed object name` になる。
+  #       比較対象 (origin/<default>) を明示することで回避し、checkout の有無にも依存しないようにする。
+  branches=$(git branch --merged "origin/${default_branch}" --format='%(refname:short)' | grep -v "^${default_branch}\$")
 
   for branch in ${(f)branches}; do
     [[ -z "$branch" ]] && continue
@@ -36,6 +54,13 @@ gitclean() {
       /^worktree / { w = $2 }
       $0 == "branch " b { print w; exit }
     ')
+
+    if (( dry_run )); then
+      [[ -n "$wt_path" ]] && echo "[dry-run] remove worktree: $wt_path"
+      echo "[dry-run] delete branch:   $branch"
+      continue
+    fi
+
     if [[ -n "$wt_path" ]]; then
       git worktree remove "$wt_path" 2>/dev/null || git worktree remove --force "$wt_path"
     fi
