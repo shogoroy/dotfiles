@@ -13,3 +13,6 @@
 	defaultBranch = main
 [push]
 	autoSetupRemote = true
+[phantom]
+	# worktree をリポジトリ root 直下の ./.worktrees/<name> に作る (default は .git/phantom/worktrees)
+	worktreesDirectory = .worktrees

@@ -173,6 +173,9 @@ ffind() {
   fi
 }
 
+# phantom (git worktree マネージャ) の短縮 alias
+alias wt=phantom
+
 fwt() {
   if ! git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
     echo "fwt: not inside a git repository" >&2
