@@ -21,8 +21,27 @@ alias cdgo='cd $GOPATH'
 
 # git
 gitclean() {
-  local default_branch=$(git symbolic-ref refs/remotes/origin/HEAD | awk -F'[/]' '{print $NF}')
-  git checkout $default_branch && git fetch --prune && git pull && git branch --merged | grep -v "*"| xargs git branch -d
+  local default_branch
+  default_branch=$(git symbolic-ref refs/remotes/origin/HEAD | awk -F'[/]' '{print $NF}')
+  git checkout "$default_branch" && git fetch --prune && git pull || return
+
+  local branches branch wt_path
+  branches=$(git branch --merged --format='%(refname:short)' | grep -v "^${default_branch}\$")
+
+  for branch in ${(f)branches}; do
+    [[ -z "$branch" ]] && continue
+
+    # マージ済みブランチに worktree が紐づいていれば先に worktree ごと削除する
+    wt_path=$(git worktree list --porcelain | awk -v b="refs/heads/$branch" '
+      /^worktree / { w = $2 }
+      $0 == "branch " b { print w; exit }
+    ')
+    if [[ -n "$wt_path" ]]; then
+      git worktree remove "$wt_path" 2>/dev/null || git worktree remove --force "$wt_path"
+    fi
+
+    git branch -d "$branch"
+  done
 }
 alias gitfp='git fetch --prune'
 alias gits='git status'
