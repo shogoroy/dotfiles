@@ -173,8 +173,78 @@ ffind() {
   fi
 }
 
-# phantom (git worktree マネージャ) の短縮 alias
-alias wt=phantom
+# wt <branch>
+# 渡した branch の worktree があれば cd コマンドを line editor バッファに push、
+# なければ `phantom attach` で worktree を作成して同様に push する。
+# branch そのものが無ければ、近い名前の候補を表示するだけで何もしない。
+wt() {
+  if ! git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+    echo "wt: not inside a git repository" >&2
+    return 1
+  fi
+  if [[ -z "$1" ]]; then
+    echo "usage: wt <branch>" >&2
+    return 1
+  fi
+
+  local branch="$1"
+  local wt_path
+
+  # 1. 既存 worktree を引く
+  wt_path=$(git worktree list --porcelain | awk -v b="refs/heads/$branch" '
+    /^worktree / { w = $2 }
+    $0 == "branch " b { print w; exit }
+  ')
+  if [[ -n "$wt_path" ]]; then
+    print -z "cd $wt_path"
+    return 0
+  fi
+
+  # 2. branch があれば phantom attach で worktree を作成
+  if git show-ref --verify --quiet "refs/heads/$branch"; then
+    phantom attach "$branch" || return $?
+    wt_path=$(git worktree list --porcelain | awk -v b="refs/heads/$branch" '
+      /^worktree / { w = $2 }
+      $0 == "branch " b { print w; exit }
+    ')
+    if [[ -n "$wt_path" ]]; then
+      print -z "cd $wt_path"
+    fi
+    return 0
+  fi
+
+  # 3. branch がない: 候補を表示するだけ
+  echo "wt: branch '$branch' が見つからない" >&2
+  local candidates
+  candidates=$(git for-each-ref --format='%(refname:short)' refs/heads/ refs/remotes/ \
+    | grep -i -- "$branch" \
+    | head -10)
+  if [[ -n "$candidates" ]]; then
+    echo "もしかして:" >&2
+    echo "$candidates" >&2
+  fi
+  return 1
+}
+
+# wt の補完: 既存 worktree を持つ branch を優先グループに、その他 local branch を次グループに出す。
+_wt() {
+  local -a wt_branches all_branches other_branches
+  wt_branches=(${(f)"$(git worktree list --porcelain 2>/dev/null | awk '
+    /^branch refs\/heads\// {
+      b = $2
+      sub(/^refs\/heads\//, "", b)
+      print b
+    }
+  ')"})
+  all_branches=(${(f)"$(git for-each-ref --format='%(refname:short)' refs/heads/ 2>/dev/null)"})
+  other_branches=(${all_branches:|wt_branches})
+
+  _describe -t wt-worktree 'worktree' wt_branches
+  _describe -t wt-branch 'branch' other_branches
+}
+if (( $+functions[compdef] )); then
+  compdef _wt wt
+fi
 
 fwt() {
   if ! git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
