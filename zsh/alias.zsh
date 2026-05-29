@@ -173,10 +173,8 @@ ffind() {
   fi
 }
 
-# wt <branch>
-# 渡した branch の worktree があれば cd コマンドを line editor バッファに push、
-# なければ `phantom attach` で worktree を作成して同様に push する。
-# branch そのものが無ければ、近い名前の候補を表示するだけで何もしない。
+# wt <branch> — branch の worktree へ移動。なければ <repo-root>/../.worktrees/<repo>/<branch> に作成。
+# branch 未存在時は候補を表示するだけ。submodule 内ではそのルートを起点にする。
 wt() {
   if ! git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
     echo "wt: not inside a git repository" >&2
@@ -200,16 +198,15 @@ wt() {
     return 0
   fi
 
-  # 2. branch があれば phantom attach で worktree を作成
+  # 2. branch があれば worktree を作成 (submodule の場合はそのルートを起点にする)
   if git show-ref --verify --quiet "refs/heads/$branch"; then
-    phantom attach "$branch" || return $?
-    wt_path=$(git worktree list --porcelain | awk -v b="refs/heads/$branch" '
-      /^worktree / { w = $2 }
-      $0 == "branch " b { print w; exit }
-    ')
-    if [[ -n "$wt_path" ]]; then
-      print -z "cd $wt_path"
-    fi
+    local git_root repo_name branch_dir wt_dest
+    git_root=$(git rev-parse --show-toplevel)
+    repo_name="${git_root:t}"
+    branch_dir="${branch//\//__}"
+    wt_dest="${git_root:h}/.worktrees/${repo_name}/${branch_dir}"
+    git worktree add "$wt_dest" "$branch" || return $?
+    print -z "cd $wt_dest"
     return 0
   fi
 
