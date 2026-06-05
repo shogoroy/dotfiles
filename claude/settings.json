@@ -3,10 +3,14 @@
     "allow": [
       "Bash(git commit:*)",
       "Bash(tee /tmp/*)"
+    ],
+    "ask": [
+      "Bash(python3 *)"
     ]
   },
+  "model": "sonnet",
   "enabledPlugins": {
     "gopls-lsp@claude-plugins-official": true
   },
-  "model": "sonnet"
+  "skipWorkflowUsageWarning": true
 }
