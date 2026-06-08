@@ -21,7 +21,10 @@ wt() {
   fi
 
   local git_root repo_name
-  git_root=$(git rev-parse --show-toplevel)
+  # worktree 内から実行した場合でも main worktree のパスを使う。
+  # git rev-parse --show-toplevel は linked worktree のルートを返してしまうため、
+  # 代わりに worktree list の先頭エントリ (= main worktree) を使う。
+  git_root=$(git worktree list --porcelain | awk 'NR==1{print $2}')
   repo_name="${git_root:t}"
 
   case "$1" in
