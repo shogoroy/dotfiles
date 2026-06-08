@@ -195,3 +195,4 @@ gco() {
   printf '%s\n' "$err" >&2
   return $exit_code
 }
+compdef _git gco=checkout
