@@ -43,7 +43,13 @@ gitclean() {
     fi
 
     if [[ -n "$wt_path" ]]; then
-      git worktree remove "$wt_path" 2>/dev/null || git worktree remove --force "$wt_path"
+      if ! git worktree remove "$wt_path" 2>/dev/null; then
+        echo "gitclean: '$wt_path' はダーティです。強制削除しますか? [y/N] " >&2
+        local reply
+        read -r reply
+        [[ "$reply" =~ ^[Yy]$ ]] || { echo "gitclean: スキップ: $branch" >&2; continue; }
+        git worktree remove --force "$wt_path"
+      fi
     fi
 
     git branch -d "$branch"
