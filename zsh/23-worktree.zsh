@@ -20,11 +20,18 @@ wt() {
     return 1
   fi
 
-  local git_root repo_name
-  # worktree 内から実行した場合でも main worktree のパスを使う。
-  # git rev-parse --show-toplevel は linked worktree のルートを返してしまうため、
-  # 代わりに worktree list の先頭エントリ (= main worktree) を使う。
-  git_root=$(git worktree list --porcelain | awk 'NR==1{print $2}')
+  local git_root repo_name git_dir
+  # git_root の解決:
+  # - 通常リポ / linked worktree: worktree list の先頭 = main worktree のパス
+  #   (show-toplevel は linked worktree 内では linked root を返すため不可)
+  # - サブモジュール内: git dir が .git/modules/ 以下にあり worktree list が
+  #   git dir 自体を返してしまうため show-toplevel を使う
+  git_dir=$(git rev-parse --absolute-git-dir 2>/dev/null)
+  if [[ "$git_dir" == *"/.git/modules/"* ]]; then
+    git_root=$(git rev-parse --show-toplevel)
+  else
+    git_root=$(git worktree list --porcelain | awk 'NR==1{print $2}')
+  fi
   repo_name="${git_root:t}"
 
   case "$1" in
