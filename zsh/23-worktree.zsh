@@ -20,7 +20,7 @@ wt() {
     return 1
   fi
 
-  local git_root repo_name git_dir
+  local git_root repo_name git_dir wt_base
   # git_root の解決:
   # - 通常リポ / linked worktree: worktree list の先頭 = main worktree のパス
   #   (show-toplevel は linked worktree 内では linked root を返すため不可)
@@ -33,6 +33,14 @@ wt() {
     git_root=$(git worktree list --porcelain | awk 'NR==1{print $2}')
   fi
   repo_name="${git_root:t}"
+  # wt_base: 新規 worktree の配置先ベースディレクトリ
+  # git_root が .worktrees/ 以下にある場合は .worktrees/ 自体を基点にする
+  # (そうでなければ <git_root:h>/.worktrees/<repo_name> を使う CLAUDE.md 規約)
+  if [[ "$git_root" == *"/.worktrees/"* ]]; then
+    wt_base="${git_root%%/.worktrees/*}/.worktrees"
+  else
+    wt_base="${git_root:h}/.worktrees/${repo_name}"
+  fi
 
   case "$1" in
 
@@ -79,7 +87,7 @@ wt() {
         echo "usage: wt -b <new-branch> [base]" >&2
         return 1
       fi
-      local wt_dest="${git_root:h}/.worktrees/${repo_name}/${new_branch}"
+      local wt_dest="${wt_base}/${new_branch}"
       git worktree add -b "$new_branch" "$wt_dest" "$base" || return $?
       cd "$wt_dest"
       ;;
@@ -120,7 +128,7 @@ wt() {
         return 0
       fi
       if git show-ref --verify --quiet "refs/heads/$branch"; then
-        local wt_dest="${git_root:h}/.worktrees/${repo_name}/${branch}"
+        local wt_dest="${wt_base}/${branch}"
         git worktree add "$wt_dest" "$branch" || return $?
         cd "$wt_dest"
         return 0
