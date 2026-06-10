@@ -35,11 +35,11 @@ wt() {
   repo_name="${git_root:t}"
   # wt_base: 新規 worktree の配置先ベースディレクトリ
   # git_root が .worktrees/ 以下にある場合は .worktrees/ 自体を基点にする
-  # (そうでなければ <git_root:h>/.worktrees/<repo_name> を使う CLAUDE.md 規約)
+  # (そうでなければ git_root/.worktrees/ を使う)
   if [[ "$git_root" == *"/.worktrees/"* ]]; then
     wt_base="${git_root%%/.worktrees/*}/.worktrees"
   else
-    wt_base="${git_root:h}/.worktrees/${repo_name}"
+    wt_base="${git_root}/.worktrees"
   fi
 
   case "$1" in
