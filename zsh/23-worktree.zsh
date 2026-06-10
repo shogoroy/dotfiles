@@ -89,6 +89,8 @@ wt() {
       fi
       local wt_dest="${wt_base}/${new_branch}"
       git worktree add -b "$new_branch" "$wt_dest" "$base" || return $?
+      (cd "$wt_dest" && git submodule update --init --recursive) \
+        || echo "wt: submodule 初期化に失敗。手動で git submodule update --init --recursive を実行してください。" >&2
       cd "$wt_dest"
       ;;
 
@@ -130,6 +132,8 @@ wt() {
       if git show-ref --verify --quiet "refs/heads/$branch"; then
         local wt_dest="${wt_base}/${branch}"
         git worktree add "$wt_dest" "$branch" || return $?
+        (cd "$wt_dest" && git submodule update --init --recursive) \
+          || echo "wt: submodule 初期化に失敗。手動で git submodule update --init --recursive を実行してください。" >&2
         cd "$wt_dest"
         return 0
       fi
