@@ -99,25 +99,29 @@ wt() {
       local selected branch
       selected=$(
         {
-          # [wt] グループ: 既存 worktree を持つブランチ
+          # worktree 済みブランチ
           git worktree list --porcelain | awk '
             /^worktree / { path = $2; next }
             /^branch refs\/heads\// {
               b = $2; sub(/^refs\/heads\//, "", b)
-              print "[wt] " b "\t" b
+              printf "[wt] %s\t%s\n", b, b
             }
           '
-          # その他のローカルブランチ (worktree なし)
-          git for-each-ref --format='%(refname:short)' refs/heads/ | \
-          awk -v wt="$(git worktree list --porcelain | awk \
-            '/^branch refs\/heads\//{b=$2; sub(/^refs\/heads\//,"",b); printf "%s\n",b}')" '
-            BEGIN { n=split(wt,a,"\n"); for(i=1;i<=n;i++) if(a[i]!="") seen[a[i]]=1 }
-            !($0 in seen) { print "     " $0 "\t" $0 }
-          '
+          # worktree なしブランチ
+          # awk -v に改行入り文字列を渡すと macOS awk (one-true-awk) がエラーになるため
+          # comm によるフィルタリングに変更
+          comm -23 \
+            <(git for-each-ref --format='%(refname:short)' refs/heads/ | sort) \
+            <(git worktree list --porcelain \
+                | awk '/^branch refs\/heads\//{b=$2; sub(/^refs\/heads\//,"",b); print b}' \
+                | sort) \
+            | awk '{ printf "     %s\t%s\n", $0, $0 }'
         } | fzf +m --with-nth=1 --delimiter=$'\t' --prompt="worktree> "
       )
       [[ -z "$selected" ]] && return 0
+      # tab で分割して最終フィールドを取得。[wt] プレフィックスが残っても除去
       branch="${selected##*$'\t'}"
+      branch="${branch#\[wt\] }"
       wt "$branch"
       ;;
 
