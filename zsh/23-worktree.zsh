@@ -99,7 +99,6 @@ wt() {
       local selected branch
       selected=$(
         {
-          # worktree 済みブランチ
           git worktree list --porcelain | awk '
             /^worktree / { path = $2; next }
             /^branch refs\/heads\// {
@@ -107,9 +106,6 @@ wt() {
               printf "[wt] %s\t%s\n", b, b
             }
           '
-          # worktree なしブランチ
-          # awk -v に改行入り文字列を渡すと macOS awk (one-true-awk) がエラーになるため
-          # comm によるフィルタリングに変更
           comm -23 \
             <(git for-each-ref --format='%(refname:short)' refs/heads/ | sort) \
             <(git worktree list --porcelain \
@@ -119,7 +115,6 @@ wt() {
         } | fzf +m --with-nth=1 --delimiter=$'\t' --prompt="worktree> "
       )
       [[ -z "$selected" ]] && return 0
-      # tab で分割して最終フィールドを取得。[wt] プレフィックスが残っても除去
       branch="${selected##*$'\t'}"
       branch="${branch#\[wt\] }"
       wt "$branch"
