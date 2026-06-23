@@ -7,6 +7,68 @@ __wt_path_for_branch() {
   '
 }
 
+# __wt_setup_submodules <wt_dest>
+# linked worktree 内のサブモジュールを初期化する。
+# git submodule update --init を worktree 内から実行すると、親リポジトリ自体が
+# submodule である場合（nested submodule 環境）に worktree 固有のモジュール
+# ディレクトリが中途半端に作られ壊れた .git ファイルが残る問題がある。
+# この関数では commondir / HEAD / gitdir を手動で書いて worktree 固有のモジュール
+# ディレクトリを正しく構築してから checkout のみを git に委ねることで問題を回避する。
+__wt_setup_submodules() {
+  local wt_dest="$1"
+  local common_dir wt_git_dir wt_name
+
+  common_dir=$(git -C "$wt_dest" rev-parse --git-common-dir 2>/dev/null) || return 1
+  wt_git_dir=$(git -C "$wt_dest" rev-parse --absolute-git-dir 2>/dev/null) || return 1
+  wt_name="${wt_git_dir:t}"  # git が内部で使う worktree 名（パスの最終要素）
+
+  local gitmodules="$wt_dest/.gitmodules"
+  [[ -f "$gitmodules" ]] || return 0
+
+  local failed=0
+  while IFS= read -r sub_path; do
+    local sub_dir="$wt_dest/$sub_path"
+    local main_module="$common_dir/modules/$sub_path"
+    local wt_module="$common_dir/worktrees/$wt_name/modules/$sub_path"
+
+    if [[ ! -d "$main_module/objects" ]]; then
+      echo "wt: submodule '$sub_path' はメイン worktree で未初期化です。先に初期化してください。" >&2
+      failed=1
+      continue
+    fi
+
+    # worktree 固有のモジュールディレクトリを手動でセットアップする
+    mkdir -p "$wt_module" || { failed=1; continue; }
+
+    # commondir: objects / config 等の共有データは main_module を参照する
+    echo "$main_module" > "$wt_module/commondir"
+
+    # HEAD: main_module の HEAD をコピー
+    cp "$main_module/HEAD" "$wt_module/HEAD" 2>/dev/null || \
+      echo "ref: refs/heads/main" > "$wt_module/HEAD"
+
+    # gitdir: working directory 内の .git ファイルへの相対パス
+    local rel_gitfile
+    rel_gitfile=$(python3 -c \
+      "import os,sys; print(os.path.relpath(sys.argv[1],sys.argv[2]))" \
+      "$sub_dir/.git" "$wt_module" 2>/dev/null) || { failed=1; continue; }
+    echo "$rel_gitfile" > "$wt_module/gitdir"
+
+    # サブモジュールの .git ファイルを wt_module へのパスで書き直す
+    local rel_module
+    rel_module=$(python3 -c \
+      "import os,sys; print(os.path.relpath(sys.argv[1],sys.argv[2]))" \
+      "$wt_module" "$sub_dir" 2>/dev/null) || { failed=1; continue; }
+    printf 'gitdir: %s\n' "$rel_module" > "$sub_dir/.git"
+
+  done < <(git config --file "$gitmodules" --get-regexp 'submodule\..*\.path' 2>/dev/null | awk '{print $2}')
+
+  # .git ファイルが正しく設定されたので --init なしで checkout のみ実行
+  git -C "$wt_dest" submodule update --recursive 2>/dev/null || failed=1
+
+  return $failed
+}
+
 # wt — git worktree all-in-one manager
 #
 #   wt                     fzf で branch を選択 → worktree に移動 (なければ作成)
@@ -26,8 +88,10 @@ wt() {
   #   (show-toplevel は linked worktree 内では linked root を返すため不可)
   # - サブモジュール内: git dir が .git/modules/ 以下にあり worktree list が
   #   git dir 自体を返してしまうため show-toplevel を使う
+  # linked worktree の git_dir にも .git/modules/ が含まれる場合がある（リポ自体が
+  # submodule の場合）ため、commondir の有無で linked worktree かどうかを区別する
   git_dir=$(git rev-parse --absolute-git-dir 2>/dev/null)
-  if [[ "$git_dir" == *"/.git/modules/"* ]]; then
+  if [[ "$git_dir" == *"/.git/modules/"* && ! -f "$git_dir/commondir" ]]; then
     git_root=$(git rev-parse --show-toplevel)
   else
     git_root=$(git worktree list --porcelain | awk 'NR==1{print $2}')
@@ -89,8 +153,8 @@ wt() {
       fi
       local wt_dest="${wt_base}/${new_branch}"
       git worktree add -b "$new_branch" "$wt_dest" "$base" || return $?
-      (cd "$wt_dest" && git submodule update --init --recursive) \
-        || echo "wt: submodule 初期化に失敗。手動で git submodule update --init --recursive を実行してください。" >&2
+      __wt_setup_submodules "$wt_dest" \
+        || echo "wt: submodule 初期化に失敗。手動で確認してください。" >&2
       cd "$wt_dest"
       ;;
 
@@ -131,8 +195,8 @@ wt() {
       if git show-ref --verify --quiet "refs/heads/$branch"; then
         local wt_dest="${wt_base}/${branch}"
         git worktree add "$wt_dest" "$branch" || return $?
-        (cd "$wt_dest" && git submodule update --init --recursive) \
-          || echo "wt: submodule 初期化に失敗。手動で git submodule update --init --recursive を実行してください。" >&2
+        __wt_setup_submodules "$wt_dest" \
+          || echo "wt: submodule 初期化に失敗。手動で確認してください。" >&2
         cd "$wt_dest"
         return 0
       fi
@@ -213,4 +277,6 @@ gco() {
   printf '%s\n' "$err" >&2
   return $exit_code
 }
-compdef _git gco=checkout
+if (( $+functions[compdef] )); then
+  compdef _git gco=git-checkout
+fi
