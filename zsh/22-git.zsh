@@ -3,6 +3,8 @@ alias gitfp='git fetch --prune'
 alias gits='git status'
 alias gfp='gitfp'
 alias gs='gits'
+gbc() { git branch --contains "${1:-HEAD}" }
+compdef '_alternative "refs:branch:__git_branch_names"' gbc
 
 # gitclean: remote の default branch に merge 済みの local branch と worktree を削除する。
 # -n / --dry-run で削除対象を表示するだけ。
