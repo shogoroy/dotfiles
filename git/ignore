@@ -9,5 +9,5 @@ credential.yml
 
 **/.claude/settings.local.json
 
-# phantom / 手動の git worktree 置き場 (どのリポでも追跡しない)
+# git worktree 置き場 (どのリポでも追跡しない)
 .worktrees/
