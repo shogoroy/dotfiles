@@ -136,11 +136,15 @@ wt() {
         fi
       fi
       if ! git worktree remove "$wt_path" 2>/dev/null; then
-        echo "wt rm: ダーティな変更があります。強制削除しますか? [y/N] " >&2
-        local reply
-        read -r reply
-        [[ "$reply" =~ ^[Yy]$ ]] || return 1
-        git worktree remove --force "$wt_path"
+        if __git_worktree_safe_to_force "$wt_path"; then
+          git worktree remove --force "$wt_path"
+        else
+          echo "wt rm: ダーティな変更があります。強制削除しますか? [y/N] " >&2
+          local reply
+          read -r reply
+          [[ "$reply" =~ ^[Yy]$ ]] || return 1
+          git worktree remove --force "$wt_path"
+        fi
       fi
       ;;
 
