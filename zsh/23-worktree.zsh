@@ -1,21 +1,84 @@
-# __wt_path_for_branch <branch>
-# 指定ブランチに対応する worktree の絶対パスを返す。存在しなければ空文字。
-__wt_path_for_branch() {
-  git worktree list --porcelain | awk -v b="refs/heads/$1" '
-    /^worktree / { w = $2 }
-    $0 == "branch " b { print w; exit }
+# __wt_resolve_worktree_path <path>
+# リポジトリ自体が submodule の場合、main worktree の path が実際の作業
+# ディレクトリではなく git dir 自身のパス (.git/modules/... 以下) として
+# 報告される既知の git の挙動がある。submodule の git dir には core.worktree
+# が設定されているため、show-toplevel で正しいパスに解決する。
+# NOTE: 変数名に "path" を使うと zsh の特殊変数 $path (=$PATH) を local で
+#       シャドウしてしまい、関数内で git 等のコマンド解決が壊れるため避ける。
+__wt_resolve_worktree_path() {
+  local resolved="$1"
+  if [[ "$resolved" == *"/.git/modules/"* ]]; then
+    resolved=$(git -C "$resolved" rev-parse --show-toplevel 2>/dev/null)
+  fi
+  echo "$resolved"
+}
+
+# __wt_path_for_dir <wt_base> <name>
+# <wt_base>/<name> がすでに登録されている worktree のパスと完全一致すれば、
+# そのパスを返す。存在しなければ空文字。
+# "production" / "qa" のような、常にディレクトリ名を固定して checkout 先の
+# branch を都度差し替えて使う worktree (deploy 用の detached HEAD 含む) は
+# branch 名では見つけられないため、ディレクトリ名でも探せるようにする。
+__wt_path_for_dir() {
+  local wt_base="$1" name="$2"
+  git worktree list --porcelain | awk -v want="${wt_base}/${name}" '
+    /^worktree / { if ($2 == want) { print $2; exit } }
   '
 }
 
-# __wt_setup_submodules <wt_dest>
+# __wt_path_for_branch <branch>
+# 指定ブランチに対応する worktree の絶対パスを返す。存在しなければ空文字。
+__wt_path_for_branch() {
+  local found
+  found=$(git worktree list --porcelain | awk -v b="refs/heads/$1" '
+    /^worktree / { w = $2 }
+    $0 == "branch " b { print w; exit }
+  ')
+  __wt_resolve_worktree_path "$found"
+}
+
+# __wt_restore_main_worktree_refs <root>
+# <root> (main worktree) 配下の submodule (再帰的) の core.worktree を、
+# main worktree 自身の実際のパスを指すよう復元する。
+# submodule の git dir は commondir 経由で全 worktree から共有されるため、
+# ある worktree で git submodule update 等を実行すると、共有された
+# core.worktree がその worktree 側のパスに書き換えられてしまい、main worktree
+# 側で `git status` 等が "cannot chdir to '.../.worktrees/...'" のように
+# 失敗するようになる。<root> の実際のパスから正しい値を再計算して書き戻す。
+__wt_restore_main_worktree_refs() {
+  local root="$1"
+  local common_dir
+  common_dir=$(git -C "$root" rev-parse --git-common-dir 2>/dev/null) || return 1
+
+  local gitmodules="$root/.gitmodules"
+  [[ -f "$gitmodules" ]] || return 0
+
+  local sub_path main_module correct_worktree
+  while IFS= read -r sub_path; do
+    main_module="$common_dir/modules/$sub_path"
+    [[ -d "$main_module/objects" ]] || continue
+
+    correct_worktree=$(python3 -c \
+      "import os,sys; print(os.path.relpath(sys.argv[1],sys.argv[2]))" \
+      "$root/$sub_path" "$main_module" 2>/dev/null) || continue
+    git config --file "$main_module/config" core.worktree "$correct_worktree"
+
+    # ネストした submodule (submodule の submodule) も再帰的に復元する
+    __wt_restore_main_worktree_refs "$root/$sub_path"
+  done < <(git config --file "$gitmodules" --get-regexp 'submodule\..*\.path' 2>/dev/null | awk '{print $2}')
+}
+
+# __wt_setup_submodules <wt_dest> <main_root>
 # linked worktree 内のサブモジュールを初期化する。
 # git submodule update --init を worktree 内から実行すると、親リポジトリ自体が
 # submodule である場合（nested submodule 環境）に worktree 固有のモジュール
 # ディレクトリが中途半端に作られ壊れた .git ファイルが残る問題がある。
 # この関数では commondir / HEAD / gitdir を手動で書いて worktree 固有のモジュール
 # ディレクトリを正しく構築してから checkout のみを git に委ねることで問題を回避する。
+# 最後に __wt_restore_main_worktree_refs で main worktree (<main_root>) 側の
+# core.worktree を復元し、main worktree の submodule 参照が壊れないようにする。
 __wt_setup_submodules() {
-  local wt_dest="$1"
+  local wt_dest="$1" main_root="$2"
   local common_dir wt_git_dir wt_name
 
   common_dir=$(git -C "$wt_dest" rev-parse --git-common-dir 2>/dev/null) || return 1
@@ -66,6 +129,9 @@ __wt_setup_submodules() {
   # .git ファイルが正しく設定されたので --init なしで checkout のみ実行
   git -C "$wt_dest" submodule update --recursive 2>/dev/null || failed=1
 
+  # 上記の submodule update が main worktree 側の core.worktree を壊すことがあるため復元する
+  [[ -n "$main_root" ]] && __wt_restore_main_worktree_refs "$main_root"
+
   return $failed
 }
 
@@ -73,25 +139,34 @@ __wt_setup_submodules() {
 #
 #   wt                     fzf で branch を選択 → worktree に移動 (なければ作成)
 #   wt <branch>            branch の worktree へ移動 (なければ作成)
+#                          ローカルに branch がなくても origin にあれば
+#                          追跡ブランチを作って worktree 化する
 #   wt -b <branch> [base]  新規ブランチ + worktree を作成して移動
 #   wt rm [branch]         worktree を削除 (省略時は fzf で選択)
 #   wt ls                  worktree 一覧を表示
+#   wt --default           main worktree (非 worktree の元のディレクトリ) へ移動し、
+#                          submodule の参照 (core.worktree) も main worktree 基準に修復する
 wt() {
   if ! git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
     echo "wt: not inside a git repository" >&2
     return 1
   fi
 
-  local git_root repo_name git_dir wt_base
+  local git_root repo_name git_common_dir wt_base
   # git_root の解決:
   # - 通常リポ / linked worktree: worktree list の先頭 = main worktree のパス
   #   (show-toplevel は linked worktree 内では linked root を返すため不可)
-  # - サブモジュール内: git dir が .git/modules/ 以下にあり worktree list が
-  #   git dir 自体を返してしまうため show-toplevel を使う
-  # linked worktree の git_dir にも .git/modules/ が含まれる場合がある（リポ自体が
-  # submodule の場合）ため、commondir の有無で linked worktree かどうかを区別する
-  git_dir=$(git rev-parse --absolute-git-dir 2>/dev/null)
-  if [[ "$git_dir" == *"/.git/modules/"* && ! -f "$git_dir/commondir" ]]; then
+  # - サブモジュール内: リポ自体が submodule の場合、common git dir が
+  #   親リポの .git/modules/ 以下にある。この場合 git worktree list の先頭
+  #   エントリは main worktree の実際の作業ディレクトリではなく git dir 自身の
+  #   パスを返してしまう（git の既知の挙動）ため、代わりに show-toplevel を使う。
+  #   この問題は「今 main checkout にいるか linked worktree にいるか」とは無関係
+  #   （common dir が submodule 配下にあるかどうかだけで発生するため、
+  #   linked worktree の中から実行した場合も同様に起こる）。そのため current
+  #   worktree の private git dir 単体 (--absolute-git-dir) ではなく、
+  #   全 worktree で共通の --git-common-dir を見て判定する。
+  git_common_dir=$(git rev-parse --path-format=absolute --git-common-dir 2>/dev/null)
+  if [[ "$git_common_dir" == *"/.git/modules/"* ]]; then
     git_root=$(git rev-parse --show-toplevel)
   else
     git_root=$(git worktree list --porcelain | awk 'NR==1{print $2}')
@@ -111,6 +186,13 @@ wt() {
     # ── wt ls ────────────────────────────────────────────────────────────
     ls|list)
       git worktree list
+      ;;
+
+    # ── wt --default: main worktree へ移動し submodule 参照を修復 ────────
+    --default)
+      local default_dir="${wt_base:h}"
+      cd "$default_dir" || return $?
+      __wt_restore_main_worktree_refs "$default_dir"
       ;;
 
     # ── wt rm [branch] ───────────────────────────────────────────────────
@@ -157,7 +239,7 @@ wt() {
       fi
       local wt_dest="${wt_base}/${new_branch}"
       git worktree add -b "$new_branch" "$wt_dest" "$base" || return $?
-      __wt_setup_submodules "$wt_dest" \
+      __wt_setup_submodules "$wt_dest" "${wt_base:h}" \
         || echo "wt: submodule 初期化に失敗。手動で確認してください。" >&2
       cd "$wt_dest"
       ;;
@@ -189,9 +271,14 @@ wt() {
       ;;
 
     # ── wt <branch>: 既存 worktree へ移動、なければ作成 ──────────────
+    # ローカルにブランチがなくても origin に存在すれば追跡ブランチを作って worktree 化する
     *)
       local branch="$1" wt_path
-      wt_path=$(__wt_path_for_branch "$branch")
+      # ディレクトリ名一致を branch 名一致より優先する: deploy 用の worktree など
+      # ディレクトリ名を固定して checkout branch を差し替える運用があるため、
+      # branch 名検索だと既存の worktree に辿り着けない/別の worktree に飛ばされることがある
+      wt_path=$(__wt_path_for_dir "$wt_base" "$branch")
+      [[ -n "$wt_path" ]] || wt_path=$(__wt_path_for_branch "$branch")
       if [[ -n "$wt_path" ]]; then
         cd "$wt_path"
         return 0
@@ -199,7 +286,19 @@ wt() {
       if git show-ref --verify --quiet "refs/heads/$branch"; then
         local wt_dest="${wt_base}/${branch}"
         git worktree add "$wt_dest" "$branch" || return $?
-        __wt_setup_submodules "$wt_dest" \
+        __wt_setup_submodules "$wt_dest" "${wt_base:h}" \
+          || echo "wt: submodule 初期化に失敗。手動で確認してください。" >&2
+        cd "$wt_dest"
+        return 0
+      fi
+      # origin にリモートブランチがあれば git fetch してから追跡ブランチを作成
+      if ! git show-ref --verify --quiet "refs/remotes/origin/$branch"; then
+        git fetch origin "$branch" > /dev/null 2>&1
+      fi
+      if git show-ref --verify --quiet "refs/remotes/origin/$branch"; then
+        local wt_dest="${wt_base}/${branch}"
+        git worktree add -b "$branch" "$wt_dest" "origin/$branch" || return $?
+        __wt_setup_submodules "$wt_dest" "${wt_base:h}" \
           || echo "wt: submodule 初期化に失敗。手動で確認してください。" >&2
         cd "$wt_dest"
         return 0
@@ -234,7 +333,7 @@ _wt() {
   case $state in
     cmd)
       local -a subcmds
-      subcmds=('ls:worktree一覧' 'rm:worktree削除' '-b:新規ブランチ+worktree作成')
+      subcmds=('ls:worktree一覧' 'rm:worktree削除' '-b:新規ブランチ+worktree作成' '--default:main worktreeへ移動しsubmodule参照を修復')
       _describe -t subcommand 'subcommand' subcmds
       _describe -t wt-worktree 'worktree' wt_branches
       _describe -t wt-branch 'branch' other_branches
@@ -274,7 +373,9 @@ gco() {
   wt_path=$(printf '%s\n' "$err" | sed -nE "s/.*is already used by worktree at '([^']+)'.*/\1/p" | head -n1)
   if [[ -n "$wt_path" ]]; then
     printf '%s\n' "$err" >&2
-    cd "$wt_path"
+    # branch が submodule の main worktree で使われている場合、git のエラーメッセージ
+    # 自体が git dir 自身のパス (.git/modules/... 以下) を報告することがあるため補正する
+    cd "$(__wt_resolve_worktree_path "$wt_path")"
     return 0
   fi
 
