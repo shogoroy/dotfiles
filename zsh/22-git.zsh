@@ -125,11 +125,15 @@ gitclean() {
 }
 
 # fzf + git
-fgbr() {
+fgco() {
   local branches branch
   branches=$(git branch --all | grep -v HEAD)
   branch=$(echo "$branches" | fzf -d $(( 2 + $(wc -l <<< "$branches") )) +m | sed "s/.* //" | sed "s#remotes/[^/]*/##")
-  print -z "git checkout $branch"
+  print -z "gco $branch"
+}
+
+fgbr() {
+  fgco
 }
 
 fgm() {
