@@ -8,3 +8,7 @@ done
 for tool in `dirname $(readlink ~/.zshrc)`/tool-install/*.zsh; do
   zsh "$tool"
 done
+
+# mise
+export PATH="$HOME/.local/bin:$PATH"
+eval "$(mise activate zsh)"
