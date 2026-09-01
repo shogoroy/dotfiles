@@ -3,6 +3,8 @@ for zsh in `dirname $(readlink ~/.zshrc)`/zsh/**/*.zsh; do
 done
 
 # 外部 CLI ツールの未インストール時セットアップ
-for tool in `dirname $(readlink ~/.zshrc)`/tool-install/*.sh; do
-  source $tool
+# サブプロセスとして実行する (source すると、スクリプト内の `exit` が
+# ログインシェル自体を終了させてしまうため)
+for tool in `dirname $(readlink ~/.zshrc)`/tool-install/*.zsh; do
+  zsh "$tool"
 done
