@@ -9,3 +9,8 @@ export XDG_CONFIG_HOME=~/.config
 export PATH=$PATH:~/.cargo/bin
 
 export PATH=$PATH:/opt/homebrew/bin
+
+# brew 版 curl が入っていれば優先する
+if [ -d /opt/homebrew/opt/curl/bin ]; then
+  export PATH="/opt/homebrew/opt/curl/bin:$PATH"
+fi
