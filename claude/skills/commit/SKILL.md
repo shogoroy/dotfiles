@@ -35,11 +35,7 @@ user-invocable: true
    - The diff contains sensitive content (credentials, secrets, personal data)
    - The scope is unusually large or touches unrelated areas
    In those cases, propose the message and ask for confirmation before proceeding.
-4. Commit with:
-
-```
-Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>
-```
+4. End the commit message with the attribution line(s) given in the session's system-reminder ("Attribution for git commits ..."), exactly as given. Do not hardcode a model name; if no attribution is given, omit the trailer.
 
 ## Example
 
