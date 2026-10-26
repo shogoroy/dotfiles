@@ -14,14 +14,5 @@ curl https://mise.run | sh
 
 export PATH="$HOME/.local/bin:$PATH"
 
-if ! grep -q 'mise activate' "$HOME/.zshrc" 2>/dev/null; then
-  cat >> "$HOME/.zshrc" <<'EOF'
-
-# mise
-export PATH="$HOME/.local/bin:$PATH"
-eval "$(mise activate zsh)"
-EOF
-  echo "Added mise activation to ~/.zshrc"
-fi
-
 echo "Installed: $(mise --version)"
+echo "mise is activated by zsh/90-mise.zsh from the next shell"
